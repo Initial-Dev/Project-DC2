@@ -1,0 +1,80 @@
+version: '3'
+
+services:
+
+    micro:
+        image: micro
+        restart: always
+        build:
+            context: ./api/Micro
+            dockerfile: Dockerfile
+        networks:
+            - backend
+            - db-micro
+        container_name: micro
+        volumes:
+            - ./api/Micro/src:/usr/local/micro/src
+
+    db-micro:
+        image: postgres
+        container_name: db-micro
+        restart: always
+        networks:
+            - db-micro
+        environment:
+            POSTGRES_USER: micro
+            POSTGRES_PASSWORD: micro
+            POSTGRES_DB: micro
+        volumes:
+            - ./api/Micro/db:/var/lib/postgresql/data
+
+
+    gateway:
+        image: gateway
+        restart: always
+        build:
+            context: ./api/Gateway
+            dockerfile: Dockerfile
+        ports:
+            - "5000:5000"
+        networks:
+            - backend
+            - db-gateway
+        depends_on:
+            - micro
+        container_name: gateway
+        volumes:
+            - ./api/Gateway/src:/usr/local/gateway/src
+
+    db-gateway:
+        image: postgres
+        container_name: db-gateway
+        restart: always
+        networks:
+            - db-gateway
+        environment:
+            POSTGRES_USER: gateway
+            POSTGRES_PASSWORD: gateway
+            POSTGRES_DB: gateway
+        volumes:
+            - ./api/Gateway/db:/var/lib/postgresql/data
+
+    client:
+        image: client
+        restart: always
+        build:
+            context: ./client
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        container_name: client
+        volumes:
+            - ./client/src/:/usr/local/client/src/
+
+networks:
+    backend:
+        driver: bridge
+    db-micro:
+        driver: bridge
+    db-gateway:
+        driver: bridge
