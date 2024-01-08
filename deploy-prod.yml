@@ -1,99 +1,196 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+    name: backend
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: backend
-  template:
-    metadata:
-      labels:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: backend
+    template:
+        metadata:
+            labels:
+                app: backend
+        spec:
+            containers:
+                - name: micro
+                  image: micro:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: backend-service
+spec:
+    selector:
         app: backend
-    spec:
-      containers:
-      - name: backend
-        image: backimg:latest
-        ports:
-        - containerPort: 5000
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 5001
+    type: LoadBalancer
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service
-spec:
-  selector:
-    app: backend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 5000
-  type: LoadBalancer
-
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway
+    name: dbmicro
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: gateway
-  template:
-    metadata:
-      labels:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dbmicro
+            tier: postgres
+    template:
+        metadata:
+            labels:
+                app: dbmicro
+                tier: postgres
+        spec:
+            containers:
+                - name: db-micro
+                  image: postgres:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5432
+                  env:
+                      - name: POSTGRES_DB
+                        value: nom-de-votre-base-de-donnees-micro
+                      - name: POSTGRES_USER
+                        value: nom-de-votre-utilisateur-micro
+                      - name: POSTGRES_PASSWORD
+                        value: mot-de-passe-de-votre-utilisateur-micro
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: dbmicro-service
+spec:
+    selector:
+        app: dbmicro
+        tier: postgres
+    ports:
+        - protocol: TCP
+          port: 5432
+          targetPort: 5432
+    type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: gateway
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: gateway
+    template:
+        metadata:
+            labels:
+                app: gateway
+        spec:
+            containers:
+                - name: gateway
+                  image: gateway:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: gateway-service
+spec:
+    selector:
         app: gateway
-    spec:
-      containers:
-      - name: gateway
-        image: gatewayimg:latest
-        ports:
-        - containerPort: 8080
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 5000
+    type: LoadBalancer
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: gateway-service
-spec:
-  selector:
-    app: gateway
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
-  type: LoadBalancer
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+    name: dbgateway
 spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: frontend
-  template:
-    metadata:
-      labels:
-        app: frontend
-    spec:
-      containers:
-      - name: frontend
-        image: frontendimg:latest
-        ports:
-        - containerPort: 80
-
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dbgateway
+            tier: postgres
+    template:
+        metadata:
+            labels:
+                app: dbgateway
+                tier: postgres
+        spec:
+            containers:
+                - name: db-gateway
+                  image: postgres:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5432
+                  env:
+                      - name: POSTGRES_DB
+                        value: nom-de-votre-base-de-donnees-gateway
+                      - name: POSTGRES_USER
+                        value: nom-de-votre-utilisateur-gateway
+                      - name: POSTGRES_PASSWORD
+                        value: mot-de-passe-de-votre-utilisateur-gateway
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-service
+    name: dbgateway-service
 spec:
-  selector:
-    app: frontend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
-  type: LoadBalancer
+    selector:
+        app: dbgateway
+        tier: postgres
+    ports:
+        - protocol: TCP
+          port: 5432
+          targetPort: 5432
+    type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: frontend
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: frontend
+    template:
+        metadata:
+            labels:
+                app: frontend
+        spec:
+            containers:
+                - name: client
+                  image: client:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: frontend-service
+spec:
+    selector:
+        app: frontend
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 3000
+    type: LoadBalancer
