@@ -25,6 +25,18 @@ const ROUTES : Route[] = [
                 [`^/micro`]: '',
             },
         }
+    },
+    {
+        url: '/cart*',
+        auth: false,
+        creditCheck: false,
+        proxy: {
+            target: "http://cart:5002",
+            changeOrigin: true,
+            pathRewrite: {
+                [`^/cart`]: '',
+            },
+        }
     }
 ]
 

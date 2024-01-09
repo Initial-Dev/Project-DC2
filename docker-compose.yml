@@ -2,9 +2,35 @@ version: '3'
 
 services:
 
+    cart:
+        image: cart
+        restart: unless-stopped
+        build:
+            context: ./api/Cart
+            dockerfile: Dockerfile
+        networks:
+            - backend
+            - db-cart
+        container_name: cart
+        volumes:
+            - ./api/Cart/src:/usr/local/cart/src
+
+    db-cart:
+        image: postgres
+        container_name: db-cart
+        restart: unless-stopped
+        networks:
+            - db-cart
+        environment:
+            POSTGRES_USER: cart
+            POSTGRES_PASSWORD: cart
+            POSTGRES_DB: cart
+        volumes:
+            - ./api/Cart/db:/var/lib/postgresql/data
+
     micro:
         image: micro
-        restart: always
+        restart: unless-stopped
         build:
             context: ./api/Micro
             dockerfile: Dockerfile
@@ -18,7 +44,7 @@ services:
     db-micro:
         image: postgres
         container_name: db-micro
-        restart: always
+        restart: unless-stopped
         networks:
             - db-micro
         environment:
@@ -31,7 +57,7 @@ services:
 
     gateway:
         image: gateway
-        restart: always
+        restart: unless-stopped
         build:
             context: ./api/Gateway
             dockerfile: Dockerfile
@@ -42,6 +68,7 @@ services:
             - db-gateway
         depends_on:
             - micro
+            - cart
         container_name: gateway
         volumes:
             - ./api/Gateway/src:/usr/local/gateway/src
@@ -49,7 +76,7 @@ services:
     db-gateway:
         image: postgres
         container_name: db-gateway
-        restart: always
+        restart: unless-stopped
         networks:
             - db-gateway
         environment:
@@ -61,7 +88,7 @@ services:
 
     client:
         image: client
-        restart: always
+        restart: unless-stopped
         build:
             context: ./client
             dockerfile: Dockerfile
@@ -77,4 +104,6 @@ networks:
     db-micro:
         driver: bridge
     db-gateway:
+        driver: bridge
+    db-cart:
         driver: bridge
