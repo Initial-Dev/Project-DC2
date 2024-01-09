@@ -37,6 +37,30 @@ const ROUTES : Route[] = [
                 [`^/cart`]: '',
             },
         }
+    },
+    {
+        url: "/products*",
+        auth: false,
+        creditCheck: false,
+        proxy: {
+            target: "http://products:5003",
+            changeOrigin: true,
+            pathRewrite: {
+                [`^/products`]: '',
+            },
+        }
+    },
+    {
+        url: "/stocks*",
+        auth: false,
+        creditCheck: false,
+        proxy: {
+            target: "http://stocks:5004",
+            changeOrigin: true,
+            pathRewrite: {
+                [`^/stocks`]: '',
+            },
+        }
     }
 ]
 

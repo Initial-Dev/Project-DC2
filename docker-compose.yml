@@ -2,6 +2,58 @@ version: '3'
 
 services:
 
+    products:
+        image: products
+        restart: unless-stopped
+        build:
+            context: ./api/Products
+            dockerfile: Dockerfile
+        networks:
+            - backend
+            - db-products
+        container_name: products
+        volumes:
+            - ./api/Products/src:/usr/local/products/src
+
+    db-products:
+        image: postgres
+        container_name: db-products
+        restart: unless-stopped
+        networks:
+            - db-products
+        environment:
+            POSTGRES_USER: products
+            POSTGRES_PASSWORD: products
+            POSTGRES_DB: products
+        volumes:
+            - ./api/Products/db:/var/lib/postgresql/data
+
+    stocks:
+        image: stocks
+        restart: unless-stopped
+        build:
+            context: ./api/Stocks
+            dockerfile: Dockerfile
+        networks:
+            - backend
+            - db-stocks
+        container_name: stocks
+        volumes:
+            - ./api/Stocks/src:/usr/local/stocks/src
+
+    db-stocks:
+        image: postgres
+        container_name: db-stocks
+        restart: unless-stopped
+        networks:
+            - db-stocks
+        environment:
+            POSTGRES_USER: stocks
+            POSTGRES_PASSWORD: stocks
+            POSTGRES_DB: stocks
+        volumes:
+            - ./api/Stocks/db:/var/lib/postgresql/data
+
     cart:
         image: cart
         restart: unless-stopped
@@ -28,33 +80,6 @@ services:
         volumes:
             - ./api/Cart/db:/var/lib/postgresql/data
 
-    micro:
-        image: micro
-        restart: unless-stopped
-        build:
-            context: ./api/Micro
-            dockerfile: Dockerfile
-        networks:
-            - backend
-            - db-micro
-        container_name: micro
-        volumes:
-            - ./api/Micro/src:/usr/local/micro/src
-
-    db-micro:
-        image: postgres
-        container_name: db-micro
-        restart: unless-stopped
-        networks:
-            - db-micro
-        environment:
-            POSTGRES_USER: micro
-            POSTGRES_PASSWORD: micro
-            POSTGRES_DB: micro
-        volumes:
-            - ./api/Micro/db:/var/lib/postgresql/data
-
-
     gateway:
         image: gateway
         restart: unless-stopped
@@ -67,8 +92,9 @@ services:
             - backend
             - db-gateway
         depends_on:
-            - micro
             - cart
+            - products
+            - stocks
         container_name: gateway
         volumes:
             - ./api/Gateway/src:/usr/local/gateway/src
@@ -101,9 +127,11 @@ services:
 networks:
     backend:
         driver: bridge
-    db-micro:
-        driver: bridge
     db-gateway:
         driver: bridge
     db-cart:
+        driver: bridge
+    db-products:
+        driver: bridge
+    db-stocks:
         driver: bridge

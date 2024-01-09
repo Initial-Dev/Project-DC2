@@ -1,0 +1,4 @@
+**/node_modules
+**/postgres
+**/docker-compose.yml
+**/Dockerfile
