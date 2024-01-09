@@ -1,17 +1,19 @@
 import ExpressConfig from "./config/express.config"
-import { Cart } from "./routes"
+import { CartRoutes } from "./routes"
 
 import dotenv from "dotenv";
+import {Logger} from "./middlewares";
 
 dotenv.config();
 
 const app = ExpressConfig()
 const PORT = process.env.PORT || 5001
 
+/**
+ * Middlewares
+ */
+app.use(Logger)
+
 app.listen(PORT, () => console.log("Server Running on Port: " + PORT))
 
-app.use(Cart)
-
-app.get('/', (_req, res) => {
-    res.send('Cart microservice ready !')
-})
+app.use(CartRoutes)
