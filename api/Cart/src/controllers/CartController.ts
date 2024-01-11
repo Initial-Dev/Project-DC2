@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
-import {getCartItems} from "../services";
+import {getCartItems, addItemToCart} from "../services";
 
-export function getCart(req: Request, res: Response) {
-    res.send(getCartItems());
+export async function getCart(req: Request, res: Response) {
+    res.send(await getCartItems());
+}
+
+export async function addToCart(req: Request, res: Response) {
+    res.send(await addItemToCart());
 }

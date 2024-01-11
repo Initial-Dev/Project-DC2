@@ -1,1 +1,1 @@
-export { getCart } from "./CartController";
+export { getCart, addToCart } from "./CartController";

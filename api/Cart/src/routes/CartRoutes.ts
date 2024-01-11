@@ -1,6 +1,6 @@
 import express from "express"
 import { Request, Response } from "express";
-import {getCart} from "../controllers";
+import {addToCart, getCart} from "../controllers";
 
 export const Router = express.Router()
 
@@ -12,9 +12,7 @@ Router.get("/", getCart)
 /**
  * Add item to user's cart
  */
-Router.post("/:idItem", (req: Request<{idItem: number}>, res: Response) => {
-    res.send(`You added item ${req.params.idItem} to your cart !`)
-})
+Router.post("/:idItem", addToCart)
 
 /**
  * Remove item from user's cart

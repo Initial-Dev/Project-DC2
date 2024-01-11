@@ -1,1 +1,1 @@
-export { getCartItems } from './CartServices';
+export { getCartItems, addItemToCart } from './CartServices';
