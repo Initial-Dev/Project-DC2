@@ -1,83 +1,213 @@
+#Stocks microservice section
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: backend
-spec:
-    replicas: 3
-    selector:
-        matchLabels:
-            app: backend
-    template:
-        metadata:
-            labels:
-                app: backend
-        spec:
-            containers:
-                - name: micro
-                  image: micro:latest
-                  imagePullPolicy: IfNotPresent
-                  ports:
-                      - containerPort: 5001
-
----
-apiVersion: v1
-kind: Service
-metadata:
-    name: backend-service
-spec:
-    selector:
-        app: backend
-    ports:
-        - protocol: TCP
-          port: 80
-          targetPort: 5001
-    type: LoadBalancer
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-    name: dbmicro
+    name: stocks
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: dbmicro
+            app: stocks
+    template:
+        metadata:
+            labels:
+                app: stocks
+        spec:
+            containers:
+                - name: stocks
+                  image: stocks:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5004
+
+#Stocks service section
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: stocks-service
+spec:
+    selector:
+        app: stocks
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 5004
+    type: LoadBalancer
+
+#Stocks database section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: dbstocks
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dbstocks
             tier: postgres
     template:
         metadata:
             labels:
-                app: dbmicro
+                app: dbstocks
                 tier: postgres
         spec:
             containers:
-                - name: db-micro
+                - name: db-stocks
                   image: postgres:latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5432
                   env:
                       - name: POSTGRES_DB
-                        value: nom-de-votre-base-de-donnees-micro
+                        value: stocks
                       - name: POSTGRES_USER
-                        value: nom-de-votre-utilisateur-micro
+                        value: stocks
                       - name: POSTGRES_PASSWORD
-                        value: mot-de-passe-de-votre-utilisateur-micro
+                        value: stocks
+
+#Products microservice section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: products
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: products
+    template:
+        metadata:
+            labels:
+                app: products
+        spec:
+            containers:
+                - name: products
+                  image: products:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5003
+
+#Products service section
 ---
 apiVersion: v1
 kind: Service
 metadata:
-    name: dbmicro-service
+    name: products-service
 spec:
     selector:
-        app: dbmicro
-        tier: postgres
+        app: products-service
     ports:
         - protocol: TCP
-          port: 5432
-          targetPort: 5432
+          port: 80
+          targetPort: 5003
     type: LoadBalancer
 
+#Products database section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: dbproducts
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dbproducts
+            tier: postgres
+    template:
+        metadata:
+            labels:
+                app: dbproducts
+                tier: postgres
+        spec:
+            containers:
+                - name: db-products
+                  image: postgres:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5432
+                  env:
+                      - name: POSTGRES_DB
+                        value: products
+                      - name: POSTGRES_USER
+                        value: products
+                      - name: POSTGRES_PASSWORD
+                        value: products
+
+#Cart microservice section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cart
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: cart
+    template:
+        metadata:
+            labels:
+                app: cart
+        spec:
+            containers:
+                - name: cart
+                  image: cart:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5002
+
+#Cart service section
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: cart-service
+spec:
+    selector:
+        app: cart
+    ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 5002
+    type: LoadBalancer
+
+#Cart database section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: dbcart
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dbcart
+            tier: postgres
+    template:
+        metadata:
+            labels:
+                app: dbcart
+                tier: postgres
+        spec:
+            containers:
+                - name: db-cart
+                  image: postgres:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5432
+                  env:
+                      - name: POSTGRES_DB
+                        value: cart
+                      - name: POSTGRES_USER
+                        value: cart
+                      - name: POSTGRES_PASSWORD
+                        value: cart
+
+#Gateway section
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -100,6 +230,7 @@ spec:
                   ports:
                       - containerPort: 5000
 
+#Gateway service section
 ---
 apiVersion: v1
 kind: Service
@@ -114,6 +245,7 @@ spec:
           targetPort: 5000
     type: LoadBalancer
 
+#Gateway database section
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -139,26 +271,13 @@ spec:
                       - containerPort: 5432
                   env:
                       - name: POSTGRES_DB
-                        value: nom-de-votre-base-de-donnees-gateway
+                        value: gateway
                       - name: POSTGRES_USER
-                        value: nom-de-votre-utilisateur-gateway
+                        value: gateway
                       - name: POSTGRES_PASSWORD
-                        value: mot-de-passe-de-votre-utilisateur-gateway
----
-apiVersion: v1
-kind: Service
-metadata:
-    name: dbgateway-service
-spec:
-    selector:
-        app: dbgateway
-        tier: postgres
-    ports:
-        - protocol: TCP
-          port: 5432
-          targetPort: 5432
-    type: LoadBalancer
+                        value: gateway
 
+#Client section
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -176,11 +295,12 @@ spec:
         spec:
             containers:
                 - name: client
-                  image: client:latest
                   imagePullPolicy: IfNotPresent
+                  image: client:latest
                   ports:
                       - containerPort: 3000
 
+#Client service section
 ---
 apiVersion: v1
 kind: Service
