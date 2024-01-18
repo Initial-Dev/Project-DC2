@@ -1,1 +1,1 @@
-export { Router as Cart } from "./Cart"
+export { Router as product } from "./product"
