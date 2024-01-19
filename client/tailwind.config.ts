@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         primary: "#171717",
       },
+      fontFamily: {
+        kanit: ["Kanit", "sans-serif"],
+      },
     },
   },
   plugins: [],
