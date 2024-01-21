@@ -7,7 +7,7 @@ services:
         build:
             context: ./api/Products
             dockerfile: Dockerfile
-            target: dev
+            target: prod
         networks:
             - backend
             - db-products
@@ -34,7 +34,7 @@ services:
         build:
             context: ./api/Stocks
             dockerfile: Dockerfile
-            target: dev
+            target: prod
         networks:
             - backend
             - db-stocks
@@ -61,7 +61,7 @@ services:
         build:
             context: ./api/Cart
             dockerfile: Dockerfile
-            target: dev
+            target: prod
         networks:
             - backend
             - db-cart
@@ -88,7 +88,7 @@ services:
         build:
             context: ./api/Gateway
             dockerfile: Dockerfile
-            target: dev
+            target: prod
         ports:
             - "5000:5000"
         networks:
@@ -121,7 +121,7 @@ services:
         build:
             context: ./client
             dockerfile: Dockerfile
-            target: dev
+            target: prod
         ports:
             - "3000:3000"
         container_name: client
