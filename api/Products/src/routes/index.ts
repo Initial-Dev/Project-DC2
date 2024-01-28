@@ -1,1 +1,1 @@
-export { Router as product } from "./product"
+export * from "./productRoutes"
