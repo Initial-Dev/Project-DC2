@@ -39,14 +39,14 @@ const ROUTES : Route[] = [
         }
     },
     {
-        url: "/products*",
+        url: "/product*",
         auth: false,
         creditCheck: false,
         proxy: {
             target: "http://products:5003",
             changeOrigin: true,
             pathRewrite: {
-                [`^/products`]: '',
+                [`^/product`]: '',
             },
         }
     },
