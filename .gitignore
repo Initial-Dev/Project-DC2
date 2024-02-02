@@ -142,3 +142,4 @@ dist
 .pnp.*
 
 **/db
+**/package-lock.json

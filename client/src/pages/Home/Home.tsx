@@ -14,11 +14,6 @@ export const Home = () => {
     );
     setIsMobile(mobile);
   }, []);
-
-  return (
-    <div>
-      <h1>Home</h1>
-      {!isMobile && <Banner />}
-    </div>
-  );
+  
+  return <div>{!isMobile && <Banner />}</div>;
 };
