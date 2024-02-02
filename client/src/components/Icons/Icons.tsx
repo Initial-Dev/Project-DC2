@@ -192,7 +192,6 @@ export const Icons = {
   nike: (props: IconProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="1000"
       width="24"
       height="24"
       viewBox="135.5 361.38 1000 356.39"
