@@ -1,6 +1,5 @@
 import "@/config/Global.css";
 import { Layout } from "@/layout";
-import { Header } from "@/pages";
 import { Router } from "@/router";
 import { ErrorBoundary } from "@/utils";
 import React from "react";
@@ -15,8 +14,7 @@ console.log(store);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <Layout>
-        <Header />
+      <Layout currentPath={location.pathname}>
         <RouterProvider router={Router} />
       </Layout>
     </ErrorBoundary>
