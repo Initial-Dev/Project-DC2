@@ -13,12 +13,13 @@ export async function listProducts(req: Request, res: Response) {
 
 export async function createProductController(req: Request, res: Response) {
   
+  const { name, description, image, price } = req.body;
+
   try {
-    const { name, description, image, price } = req.body;
     const newProduct = await createProduct({ name, description, image, price });
-    res.json(newProduct);
+    res.status(201).json(newProduct);
   } catch (error) {
-    console.error('Error creating product:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error creating product:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
