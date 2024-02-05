@@ -1,4 +1,10 @@
-import { Banner, BrandGrid, UniverseGrid, WeekSales } from "@/components";
+import {
+  Banner,
+  BrandGrid,
+  Category,
+  UniverseGrid,
+  WeekSales,
+} from "@/components";
 import { useEffect, useState } from "react";
 
 export const Home = () => {
@@ -21,6 +27,7 @@ export const Home = () => {
       <WeekSales />
       <UniverseGrid />
       <BrandGrid />
+      <Category />
     </div>
   );
 };
