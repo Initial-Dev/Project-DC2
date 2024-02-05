@@ -1,4 +1,4 @@
-import { Banner, UniverseGrid, WeekSales } from "@/components";
+import { Banner, BrandGrid, UniverseGrid, WeekSales } from "@/components";
 import { useEffect, useState } from "react";
 
 export const Home = () => {
@@ -16,10 +16,11 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col w-full gap-6 ">
+    <div className="flex flex-col items-center w-full gap-10 ">
       {!isMobile && <Banner />}
       <WeekSales />
       <UniverseGrid />
+      <BrandGrid />
     </div>
   );
 };
