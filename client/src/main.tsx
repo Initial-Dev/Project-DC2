@@ -14,7 +14,7 @@ console.log(store);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <Layout>
+      <Layout currentPath={location.pathname}>
         <RouterProvider router={Router} />
       </Layout>
     </ErrorBoundary>
