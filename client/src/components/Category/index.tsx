@@ -29,7 +29,7 @@ export const Category = () => {
     <div className="flex flex-col gap-4 relative w-full px-8">
       <div className="flex items-center px-2">
         <h1 className="font-kanit font-normal items-center text-xl">
-          Votre univers sportif
+          Univers de mode
         </h1>
       </div>
       <div className="flex px-1  gap-4">
