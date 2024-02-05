@@ -9,7 +9,7 @@ import {
 
 export function WeekSales() {
   return (
-    <Carousel className="flex flex-col gap-4 relative w-full px-4">
+    <Carousel className="flex flex-col gap-4 relative w-full px-8">
       <div className="flex items-center justify-between px-2">
         <h1 className="font-kanit font-normal items-center text-xl">
           Nouveau cette semaine
