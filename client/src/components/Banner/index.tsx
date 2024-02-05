@@ -48,7 +48,7 @@ export const Banner = () => {
   }, []); // Le tableau vide assure que useEffect s'exécute une seule fois à la création du composant
 
   return (
-    <div className="hidden md:block relative w-full h-[40rem] overflow-hidden p-4">
+    <div className="hidden md:block relative w-full h-[40rem] overflow-hidden px-8 py-4">
       <div className="absolute flex flex-col gap-4 bottom-20 left-20 z-20 ">
         {/* A remplacer par valeur dynamique */}
         <h1 className="text-white font-kanit text-3xl">
