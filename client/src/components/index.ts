@@ -1,5 +1,6 @@
 export { Banner } from "./Banner/";
 export { BrandGrid } from "./BrandGrid/";
+export { Category } from "./Category/";
 export { Icons } from "./Icons/Icons.tsx";
 export { LinkButton } from "./LinkButton/LinkButton.tsx";
 export { Nav } from "./Nav/Nav.tsx";
