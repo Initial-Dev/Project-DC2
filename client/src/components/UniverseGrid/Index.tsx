@@ -32,23 +32,25 @@ export const UniverseGrid = () => {
           Votre Univers Sportif
         </h1>
       </div>
-      <div className="flex overflow-x-auto min-w-max md:overflow-hidden md:min-w-full md:w-full  items-center px-1 gap-4">
-        {images.map((image) => (
-          <a
-            key={image.id}
-            href={image.href}
-            className="relative w-48 md:w-full rounded-lg overflow-hidden"
-          >
-            <img
-              className="w-full h-full object-cover transform grayscale hover:grayscale-0 transition-all duration-500 hover:scale-150 hover:rotate-3"
-              src={image.src}
-              alt={image.alt}
-            />
-            <Badge className="absolute rounded-full left-5 bottom-5 flex items-center justify-center">
-              {image.title}
-            </Badge>
-          </a>
-        ))}
+      <div className="flex overflow-x-scroll">
+        <div className="flex min-w-max md:overflow-hidden md:min-w-full md:w-full items-center px-1 gap-4">
+          {images.map((image) => (
+            <a
+              key={image.id}
+              href={image.href}
+              className="relative w-48 md:w-full rounded-lg overflow-hidden"
+            >
+              <img
+                className="w-full h-full object-cover transform grayscale hover:grayscale-0 transition-all duration-500 hover:scale-150 hover:rotate-3"
+                src={image.src}
+                alt={image.alt}
+              />
+              <Badge className="absolute rounded-full left-5 bottom-5 flex items-center justify-center">
+                {image.title}
+              </Badge>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );

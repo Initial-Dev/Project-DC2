@@ -32,23 +32,25 @@ export const Category = () => {
           Univers de mode
         </h1>
       </div>
-      <div className="flex px-1  gap-4">
-        {images.map((image) => (
-          <a
-            key={image.id}
-            href={image.href}
-            className="relative rounded-lg overflow-hidden"
-          >
-            <img
-              className="w-full h-full object-cover object-top transform grayscale hover:grayscale-0 transition-all duration-500  "
-              src={image.src}
-              alt={image.alt}
-            />
-            <Badge className="absolute rounded-full bottom-2 left-2 sm:left-5 sm:bottom-5 flex items-center justify-center">
-              {image.title}
-            </Badge>
-          </a>
-        ))}
+      <div className="flex overflow-x-scroll">
+        <div className="flex min-w-max md:overflow-hidden md:min-w-full md:w-full items-center px-1 gap-4">
+          {images.map((image) => (
+            <a
+              key={image.id}
+              href={image.href}
+              className="relative w-48 h-full md:w-full rounded-lg overflow-hidden"
+            >
+              <img
+                className="w-full h-full object-cover object-top transform grayscale hover:grayscale-0 transition-all duration-500  "
+                src={image.src}
+                alt={image.alt}
+              />
+              <Badge className="absolute rounded-full bottom-2 left-2 sm:left-5 sm:bottom-5 flex items-center justify-center">
+                {image.title}
+              </Badge>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
