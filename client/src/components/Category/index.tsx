@@ -32,8 +32,8 @@ export const Category = () => {
           Univers de mode
         </h1>
       </div>
-      <div className="flex overflow-x-scroll">
-        <div className="flex min-w-max md:overflow-hidden md:min-w-full md:w-full items-center px-1 gap-4">
+      <div className="flex overflow-x-scroll md:overflow-hidden">
+        <div className="flex min-w-max  md:min-w-full md:w-full items-center px-1 gap-4">
           {images.map((image) => (
             <a
               key={image.id}
