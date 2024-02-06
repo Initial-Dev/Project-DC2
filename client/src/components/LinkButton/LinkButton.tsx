@@ -4,11 +4,17 @@ type LinkButtonProps = {
   link: string;
 };
 
-export const LinkButton = ({ icon, label, link }: LinkButtonProps) => {
+export const LinkButton = ({
+  icon,
+  label,
+  link,
+  ...props
+}: LinkButtonProps) => {
   return (
     <button
       className={"flex flex-row gap-1.5"}
       onClick={() => (window.location.href = link)}
+      {...props}
     >
       {icon}
       {label && <span className={"text-xs flex items-center"}>{label}</span>}

@@ -23,6 +23,20 @@ export const UniverseGrid = () => {
       title: "Football",
       href: "/",
     },
+    {
+      id: 4,
+      src: "./images/universe/image4.png",
+      alt: "",
+      title: "Tennis",
+      href: "/",
+    },
+    {
+      id: 5,
+      src: "./images/universe/image5.png",
+      alt: "",
+      title: "Skateboard",
+      href: "/",
+    },
   ];
 
   return (
@@ -32,13 +46,13 @@ export const UniverseGrid = () => {
           Votre Univers Sportif
         </h1>
       </div>
-      <div className="flex overflow-x-scroll">
-        <div className="flex min-w-max md:overflow-hidden md:min-w-full md:w-full items-center px-1 gap-4">
+      <div className="flex px-1 py-4 overflow-x-auto">
+        <div className="flex items-center gap-4">
           {images.map((image) => (
             <a
               key={image.id}
               href={image.href}
-              className="relative w-48 md:w-full rounded-lg overflow-hidden"
+              className="relative w-64 h-36 md:w-96 md:h-48 rounded-lg overflow-hidden"
             >
               <img
                 className="w-full h-full object-cover transform grayscale hover:grayscale-0 transition-all duration-500 hover:scale-150 hover:rotate-3"

@@ -1,4 +1,5 @@
-import { NavigationNav, SearchBar, ShopButton, UserNav } from "@/components/";
+import { NavigationNav, SearchBar, ShopButton } from "@/components/";
+//import { UserNav } from '@/components/UserNav/UserNav';
 import { Dialog, Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import {
@@ -9,7 +10,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-
+import { Button } from "../ui/button";
 interface NavbarProps {
   currentPath: string;
 }
@@ -51,11 +52,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 h-auto bg-white border-b shadow-sm">
+    <nav className="sticky top-0 z-50 h-auto bg-white border-b ">
       <div className="flex h-16 items-center px-4">
         <a href="/" className="flex items-center gap-3">
           <img className="h-10 w-10" src="./logo.png" alt="BreizhSPORT-logo" />
-
           <h1 className=" hidden sm:block font-kanit font-semibold">
             BreizhSPORT
           </h1>
@@ -64,7 +64,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
           <NavigationNav currentPath={currentPath} />
           <SearchBar />
           <ShopButton />
-          <UserNav />
+          <Button link={"/login"}> Login </Button>
+          {/* <UserNav /> */}
           <div className="flex xl:hidden">
             <button
               type="button"

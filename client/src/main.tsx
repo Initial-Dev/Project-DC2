@@ -14,9 +14,13 @@ console.log(store);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <Layout currentPath={location.pathname}>
+      {location.pathname !== "/login" ? (
+        <Layout currentPath={location.pathname}>
+          <RouterProvider router={Router} />
+        </Layout>
+      ) : (
         <RouterProvider router={Router} />
-      </Layout>
+      )}
     </ErrorBoundary>
   </React.StrictMode>,
 );

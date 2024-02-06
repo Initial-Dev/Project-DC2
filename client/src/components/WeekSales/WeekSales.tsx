@@ -26,9 +26,9 @@ export function WeekSales() {
             className="basis-1/2 sm:basis-1/3 lg:basis-1/5"
           >
             <a href="/">
-              <div className="flex flex-col gap-2 px-1">
-                <Card>
-                  <CardContent className="relative max-w-xs overflow-hidden bg-zinc-100 bg-no-repeat rounded-xl">
+              <div className="flex flex-col  gap-2 px-1">
+                <Card className="bg-zinc-100 overflow-hidden rounded-xl">
+                  <CardContent className="relative max-w-xs">
                     <img
                       className="object-cover transition duration-300 ease-in-out hover:scale-90"
                       src={item.image}
