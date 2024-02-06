@@ -22,7 +22,7 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center w-full gap-10 ">
+    <div className="flex mt-7 md:mt-0 flex-col items-center w-full gap-10 ">
       {!isMobile && <Banner />}
       <WeekSales />
       <UniverseGrid />
