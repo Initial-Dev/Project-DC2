@@ -25,12 +25,13 @@ COPY package.json .
 COPY package-lock.json .
 COPY tsconfig.json .
 COPY .env .
-COPY ./src .
 
 RUN npm ci
 
+COPY ./dist ./dist
+
 EXPOSE 5003
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
 
 

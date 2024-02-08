@@ -1,8 +1,12 @@
-#Stocks microservice section
+# Stocks microservice section
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: stocks
+    namespace: bsp
+    labels:
+        app: stocks
 spec:
     replicas: 1
     selector:
@@ -15,10 +19,16 @@ spec:
         spec:
             containers:
                 - name: stocks
-                  image: stocks:latest-prod
+                  image: public.ecr.aws/g6j5x0b6/bsp:stocks-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5004
+                  livenessProbe:
+                      httpGet:
+                          path: /health # Le chemin pour la vérification de la santé du microservice
+                          port: 5004
+                      initialDelaySeconds: 15
+                      periodSeconds: 10
 
 #Stocks service section
 ---
@@ -26,6 +36,9 @@ apiVersion: v1
 kind: Service
 metadata:
     name: stocks-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: stocks
@@ -41,6 +54,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: dbstocks
+    namespace: bsp
 spec:
     replicas: 1
     selector:
@@ -55,7 +69,7 @@ spec:
         spec:
             containers:
                 - name: db-stocks
-                  image: postgres:latest-prod
+                  image: postgres:latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5432
@@ -73,6 +87,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: products
+    namespace: bsp
+    labels:
+        app: products
 spec:
     replicas: 1
     selector:
@@ -85,10 +102,16 @@ spec:
         spec:
             containers:
                 - name: products
-                  image: products:latest-prod
+                  image: public.ecr.aws/g6j5x0b6/bsp:products-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5003
+                  livenessProbe:
+                      httpGet:
+                          path: /health # Le chemin pour la vérification de la santé du microservice
+                          port: 5003
+                      initialDelaySeconds: 15
+                      periodSeconds: 10
 
 #Products service section
 ---
@@ -96,9 +119,12 @@ apiVersion: v1
 kind: Service
 metadata:
     name: products-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
-        app: products-service
+        app: products
     ports:
         - protocol: TCP
           port: 82
@@ -111,6 +137,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: dbproducts
+    namespace: bsp
 spec:
     replicas: 1
     selector:
@@ -125,7 +152,7 @@ spec:
         spec:
             containers:
                 - name: db-products
-                  image: postgres:latest-prod
+                  image: postgres:latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5432
@@ -143,6 +170,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: cart
+    namespace: bsp
+    labels:
+        app: cart
 spec:
     replicas: 1
     selector:
@@ -155,10 +185,16 @@ spec:
         spec:
             containers:
                 - name: cart
-                  image: cart:latest-prod
+                  image: public.ecr.aws/g6j5x0b6/bsp:cart-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5002
+                  livenessProbe:
+                      httpGet:
+                          path: /health # Le chemin pour la vérification de la santé du microservice
+                          port: 5002
+                      initialDelaySeconds: 15
+                      periodSeconds: 10
 
 #Cart service section
 ---
@@ -166,6 +202,9 @@ apiVersion: v1
 kind: Service
 metadata:
     name: cart-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: cart
@@ -181,6 +220,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: dbcart
+    namespace: bsp
 spec:
     replicas: 1
     selector:
@@ -195,7 +235,7 @@ spec:
         spec:
             containers:
                 - name: db-cart
-                  image: postgres:latest-prod
+                  image: postgres:latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5432
@@ -213,6 +253,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: gateway
+    namespace: bsp
+    labels:
+        app: gateway
 spec:
     replicas: 1
     selector:
@@ -225,7 +268,7 @@ spec:
         spec:
             containers:
                 - name: gateway
-                  image: gateway:latest-prod
+                  image: public.ecr.aws/g6j5x0b6/bsp:gateway-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5000
@@ -236,6 +279,9 @@ apiVersion: v1
 kind: Service
 metadata:
     name: gateway-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: gateway
@@ -251,6 +297,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: dbgateway
+    namespace: bsp
 spec:
     replicas: 1
     selector:
@@ -265,7 +312,7 @@ spec:
         spec:
             containers:
                 - name: db-gateway
-                  image: postgres:latest-prod
+                  image: postgres:latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5432
@@ -283,8 +330,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: frontend
+    namespace: bsp
+    labels:
+        app: frontend
 spec:
-    replicas: 2
+    replicas: 1
     selector:
         matchLabels:
             app: frontend
@@ -295,7 +345,7 @@ spec:
         spec:
             containers:
                 - name: client
-                  image: client:latest-prod
+                  image: public.ecr.aws/g6j5x0b6/bsp:client-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 3000
@@ -306,6 +356,9 @@ apiVersion: v1
 kind: Service
 metadata:
     name: frontend-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: frontend

@@ -24,13 +24,15 @@ WORKDIR /usr/local/gateway
 COPY package.json .
 COPY package-lock.json .
 COPY .env .
-COPY ./src .
 
 RUN npm ci
+
+COPY ./dist ./dist
 
 EXPOSE 5000
 
 COPY tsconfig.json .
-CMD ["npm", "run", "dev"]
+
+CMD ["npm", "start"]
 
 

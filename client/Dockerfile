@@ -20,12 +20,12 @@ RUN echo "Run as Prod"
 
 WORKDIR /usr/local/client
 
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json .
 COPY .env .
-COPY /src .
 
 RUN npm ci
+
+COPY ./dist ./dist
 
 EXPOSE 3000
 

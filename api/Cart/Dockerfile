@@ -27,12 +27,13 @@ COPY package-lock.json .
 COPY tsconfig.json .
 COPY .env .
 COPY prisma ./prisma
-COPY ./src .
 
 RUN npm ci
 
+COPY ./dist ./dist
+
 EXPOSE 5002
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
 
 
