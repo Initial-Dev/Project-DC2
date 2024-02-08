@@ -1,1 +1,1 @@
-export { default as configStore } from "./configStore.ts";
+export { default as configStore } from "./configStore";

@@ -1,88 +1,261 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-    name: backend
-spec:
-    replicas: 3
-    selector:
-        matchLabels:
-            app: backend
-    template:
-        metadata:
-            labels:
-                app: backend
-        spec:
-            containers:
-                - name: micro
-                  image: micro:latest
-                  imagePullPolicy: IfNotPresent
-                  ports:
-                      - containerPort: 5001
-
----
-apiVersion: v1
-kind: Service
-metadata:
-    name: backend-service
-spec:
-    selector:
-        app: backend
-    ports:
-        - protocol: TCP
-          port: 80
-          targetPort: 5001
-    type: LoadBalancer
-
+# Stocks microservice section
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: dbmicro
+    name: stocks
+    namespace: bsp
+    labels:
+        app: stocks
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: dbmicro
+            app: stocks
+    template:
+        metadata:
+            labels:
+                app: stocks
+        spec:
+            containers:
+                - name: stocks
+                  image: public.ecr.aws/g6j5x0b6/bsp:stocks-v1.0.0
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5004
+                  livenessProbe:
+                      httpGet:
+                          path: /health # Le chemin pour la vérification de la santé du microservice
+                          port: 5004
+                      initialDelaySeconds: 15
+                      periodSeconds: 10
+
+#Stocks service section
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: stocks-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+    selector:
+        app: stocks
+    ports:
+        - protocol: TCP
+          port: 81
+          targetPort: 5004
+    type: LoadBalancer
+
+#Stocks database section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: dbstocks
+    namespace: bsp
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dbstocks
             tier: postgres
     template:
         metadata:
             labels:
-                app: dbmicro
+                app: dbstocks
                 tier: postgres
         spec:
             containers:
-                - name: db-micro
+                - name: db-stocks
                   image: postgres:latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5432
                   env:
                       - name: POSTGRES_DB
-                        value: nom-de-votre-base-de-donnees-micro
+                        value: stocks
                       - name: POSTGRES_USER
-                        value: nom-de-votre-utilisateur-micro
+                        value: stocks
                       - name: POSTGRES_PASSWORD
-                        value: mot-de-passe-de-votre-utilisateur-micro
+                        value: stocks
+
+#Products microservice section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: products
+    namespace: bsp
+    labels:
+        app: products
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: products
+    template:
+        metadata:
+            labels:
+                app: products
+        spec:
+            containers:
+                - name: products
+                  image: public.ecr.aws/g6j5x0b6/bsp:products-v1.0.0
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5003
+                  livenessProbe:
+                      httpGet:
+                          path: /health # Le chemin pour la vérification de la santé du microservice
+                          port: 5003
+                      initialDelaySeconds: 15
+                      periodSeconds: 10
+
+#Products service section
 ---
 apiVersion: v1
 kind: Service
 metadata:
-    name: dbmicro-service
+    name: products-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
-        app: dbmicro
-        tier: postgres
+        app: products
     ports:
         - protocol: TCP
-          port: 5432
-          targetPort: 5432
+          port: 82
+          targetPort: 5003
     type: LoadBalancer
 
+#Products database section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: dbproducts
+    namespace: bsp
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dbproducts
+            tier: postgres
+    template:
+        metadata:
+            labels:
+                app: dbproducts
+                tier: postgres
+        spec:
+            containers:
+                - name: db-products
+                  image: postgres:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5432
+                  env:
+                      - name: POSTGRES_DB
+                        value: products
+                      - name: POSTGRES_USER
+                        value: products
+                      - name: POSTGRES_PASSWORD
+                        value: products
+
+#Cart microservice section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cart
+    namespace: bsp
+    labels:
+        app: cart
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: cart
+    template:
+        metadata:
+            labels:
+                app: cart
+        spec:
+            containers:
+                - name: cart
+                  image: public.ecr.aws/g6j5x0b6/bsp:cart-v1.0.1
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5002
+                  livenessProbe:
+                      httpGet:
+                          path: /health # Le chemin pour la vérification de la santé du microservice
+                          port: 5002
+                      initialDelaySeconds: 15
+                      periodSeconds: 10
+
+#Cart service section
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: cart-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+spec:
+    selector:
+        app: cart
+    ports:
+        - protocol: TCP
+          port: 83
+          targetPort: 5002
+    type: LoadBalancer
+
+#Cart database section
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: dbcart
+    namespace: bsp
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dbcart
+            tier: postgres
+    template:
+        metadata:
+            labels:
+                app: dbcart
+                tier: postgres
+        spec:
+            containers:
+                - name: db-cart
+                  image: postgres:latest
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                      - containerPort: 5432
+                  env:
+                      - name: POSTGRES_DB
+                        value: cart
+                      - name: POSTGRES_USER
+                        value: cart
+                      - name: POSTGRES_PASSWORD
+                        value: cart
+
+#Gateway section
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: gateway
+    namespace: bsp
+    labels:
+        app: gateway
 spec:
     replicas: 1
     selector:
@@ -95,30 +268,36 @@ spec:
         spec:
             containers:
                 - name: gateway
-                  image: gateway:latest
+                  image: public.ecr.aws/g6j5x0b6/bsp:gateway-v1.0.0
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5000
 
+#Gateway service section
 ---
 apiVersion: v1
 kind: Service
 metadata:
     name: gateway-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: gateway
     ports:
         - protocol: TCP
-          port: 80
+          port: 84
           targetPort: 5000
     type: LoadBalancer
 
+#Gateway database section
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: dbgateway
+    namespace: bsp
 spec:
     replicas: 1
     selector:
@@ -139,33 +318,23 @@ spec:
                       - containerPort: 5432
                   env:
                       - name: POSTGRES_DB
-                        value: nom-de-votre-base-de-donnees-gateway
+                        value: gateway
                       - name: POSTGRES_USER
-                        value: nom-de-votre-utilisateur-gateway
+                        value: gateway
                       - name: POSTGRES_PASSWORD
-                        value: mot-de-passe-de-votre-utilisateur-gateway
----
-apiVersion: v1
-kind: Service
-metadata:
-    name: dbgateway-service
-spec:
-    selector:
-        app: dbgateway
-        tier: postgres
-    ports:
-        - protocol: TCP
-          port: 5432
-          targetPort: 5432
-    type: LoadBalancer
+                        value: gateway
 
+#Client section
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: frontend
+    namespace: bsp
+    labels:
+        app: frontend
 spec:
-    replicas: 2
+    replicas: 1
     selector:
         matchLabels:
             app: frontend
@@ -176,16 +345,20 @@ spec:
         spec:
             containers:
                 - name: client
-                  image: client:latest
+                  image: public.ecr.aws/g6j5x0b6/bsp:client-v1.0.0
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 3000
 
+#Client service section
 ---
 apiVersion: v1
 kind: Service
 metadata:
     name: frontend-service
+    namespace: bsp
+    annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: frontend
