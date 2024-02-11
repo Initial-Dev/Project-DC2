@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getProducts, getProductById, createProduct} from "../services/ProductServices";
+import { getProducts, getProductById, createProduct, updateProduct} from "../services/ProductServices";
 
 export async function listProducts(req: Request, res: Response) {
   try {
@@ -31,13 +31,6 @@ export async function createProductController(req: Request, res: Response) {
     // Extraire les données de la requête
     const { name, description, image, price, categoryId } = req.body;
 
-    // Débogage : Afficher les données reçues du client
-    console.log('name:', name);
-    console.log('description:', description);
-    console.log('image:', image);
-    console.log('price:', price);
-    console.log('categoryId:', categoryId);
-
     // Appeler le service pour créer le produit
     const newProduct = await createProduct({
       
@@ -57,6 +50,22 @@ export async function createProductController(req: Request, res: Response) {
   }
 }
 
+export async function updateProductController(req: Request, res: Response) {
+  try {
+    // Extraire l'ID du produit et les données mises à jour de la requête
+    const productId = parseInt(req.params.productId);
+    const updatedData = req.body;
+
+    // Appeler la fonction pour mettre à jour le produit
+    const updatedProduct = await updateProduct(productId, updatedData);
+
+    // Répondre avec le produit mis à jour
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
 /*async function createProductController(name: string, description: string, image: string, price: number, categoryId?: number) {
   try {
     const newProduct = await prisma.product.create({

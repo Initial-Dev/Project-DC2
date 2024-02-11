@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, Product } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -34,6 +34,20 @@ export async function createProduct(productData: {name: string, description: str
     return newProduct;
   } catch (error) {
     console.error('Error creating product:', error);
+    throw error;
+  }
+}
+
+export async function updateProduct(productId: number, updatedData: Prisma.ProductUpdateInput): Promise<Product | null> {
+  try {
+    // Utiliser la méthode update de Prisma pour mettre à jour le produit
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId }, // Spécifier l'ID du produit à mettre à jour
+      data: updatedData, // Spécifier les données mises à jour
+    });
+    return updatedProduct;
+  } catch (error) {
+    console.error('Error updating product:', error);
     throw error;
   }
 }
