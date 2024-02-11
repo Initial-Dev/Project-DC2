@@ -50,6 +50,7 @@ const ROUTES : Route[] = [
             },
         }
     },
+
     {
         url: "/stocks*",
         auth: false,

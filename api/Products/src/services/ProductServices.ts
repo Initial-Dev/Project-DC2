@@ -1,6 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import path from "path";
-import fs from "fs/promises";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +6,39 @@ export async function getProducts() {
   return prisma.product.findMany();
 }
 
-export async function createProduct(productData: { name: string, description: string, image: string, price: number }) {
+export async function getProductById(productId: number) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+    return product;
+  } catch (error) {
+    console.error('Error fetching product by ID:', error);
+    throw error;
+  }
+}
+
+export async function createProduct(productData: {name: string, description: string, image: string, price: number, categoryId: number}) {
+  try {
+    const newProduct = await prisma.product.create({
+      data: {
+        name: productData.name,
+        description: productData.description,
+        image: productData.image,
+        price: productData.price,
+        categoryId: productData.categoryId,
+      },
+    });
+    return newProduct;
+  } catch (error) {
+    console.error('Error creating product:', error);
+    throw error;
+  }
+}
+
+/*export async function createProduct(productData: { name: string, description: string, image: string, price: number }) {
   try {
     // Générer un chemin unique pour l'image sur le disque
     const imageName = `${Date.now()}_${(productData.name || "").replace(/\s+/g, "_")}.jpg`;
@@ -44,4 +74,4 @@ export async function createProduct(productData: { name: string, description: st
     console.error("Error creating product:", error);
     throw error; // Renvoie l'erreur pour la traiter plus haut si nécessaire
   }
-}
+}*/
