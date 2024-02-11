@@ -8,6 +8,6 @@ export { NavigationNav } from "./Navbar/NavigationNav.tsx";
 export { UserNav } from "./Navbar/UserNav.tsx";
 export { SearchBar } from "./SearchBar/SearchBar.tsx";
 export { ShopButton } from "./ShopButton/ShopButton.tsx";
-export { UniverseGrid } from "./UniverseGrid/index.tsx";
+export { UniverseGrid } from "./UniverseGrid/Index.tsx";
 export { UserAuthForm } from "./UserAuthForm/";
 export { WeekSales } from "./WeekSales/WeekSales.tsx";

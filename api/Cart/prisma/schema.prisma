@@ -11,23 +11,24 @@ datasource db {
 }
 
 model Cart {
-  id   Int    @id @default(autoincrement())
-  userID Int
-  itemId Int
+  userID   Int
+  itemId   Int
   quantity Int
+
+  @@id([userID, itemId])
 }
 
 model Shipping {
-  id   Int    @id @default(autoincrement())
-  userID Int
+  id      Int    @id @default(autoincrement())
+  userID  Int
   address String
-  city String
-  state String
-  zip String
+  city    String
+  state   String
+  zip     String
 }
 
 model Payment {
-  id   Int    @id @default(autoincrement())
+  id     Int   @id @default(autoincrement())
   userID Int
   amount Float
 }
