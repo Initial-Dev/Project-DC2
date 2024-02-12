@@ -63,3 +63,22 @@ export async function uploadImage(file: Express.Multer.File) {
       throw error;
   }
 }
+
+export async function createProductWithImage(productData: { name: string, description: string, price: number, categoryId: number, imagePath: string }) {
+  try {
+    // Enregistrer le produit dans la base de données
+    const newProduct = await prisma.product.create({
+      data: {
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        categoryId: productData.categoryId,
+        image: productData.imagePath // Enregistrer le chemin de l'image dans la base de données
+      }
+    });
+    return newProduct;
+  } catch (error) {
+    console.error('Erreur lors de la création du produit avec image :', error);
+    throw error;
+  }
+}

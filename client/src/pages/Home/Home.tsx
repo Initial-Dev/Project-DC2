@@ -34,9 +34,9 @@ const Home: React.FC = () => {
     <div>
       <h2>Produits phares</h2>
       <div className="product-grid">
-        {products.map((product) => (
+        {products.map((product: Product) => (
           <div key={product.id} className="product-card">
-            <img src={`/images${product.image}`} alt={product.name} />
+            <img src={product.image} alt={product.name} />
             <h3>{product.name}</h3>
             <p>{product.description}</p>
             <p>Prix: €{product.price}</p>
