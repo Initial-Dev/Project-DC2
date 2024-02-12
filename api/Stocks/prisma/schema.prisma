@@ -10,7 +10,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id   Int    @id @default(autoincrement())
-  name String
+model Product {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  stock       Stock? @relation("ProductStock")
+  // Pas besoin de `fields` et `references` ici puisque c'est le côté Stock qui les contiendra
 }
+
+model Stock {
+  id                Int      @id @default(autoincrement())
+  quantity          Int     
+  reorderThreshold  Int     
+  lastUpdated       DateTime @updatedAt 
+  product           Product  @relation("ProductStock", fields: [productId], references: [id])
+  productId         Int      @unique 
+  replenishmentNotifications ReplenishmentNotification[]
+
+}
+
+model ReplenishmentNotification {
+  id        Int      @id @default(autoincrement())
+  stockId   Int      
+  message   String  
+  createdAt DateTime @default(now()) 
+  stock     Stock    @relation(fields: [stockId], references: [id])
+}
+
