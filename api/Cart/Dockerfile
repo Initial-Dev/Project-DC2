@@ -27,10 +27,9 @@ COPY package-lock.json .
 COPY tsconfig.json .
 COPY .env .
 COPY prisma ./prisma
+COPY ./dist ./dist
 
 RUN npm ci
-
-COPY ./dist ./dist
 
 EXPOSE 5002
 

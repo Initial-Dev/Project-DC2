@@ -19,7 +19,7 @@ spec:
         spec:
             containers:
                 - name: stocks
-                  image: public.ecr.aws/g6j5x0b6/bsp:stocks-v1.0.0
+                  image: public.ecr.aws/j0r1d0e2/bsp:stocks-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5004
@@ -102,7 +102,7 @@ spec:
         spec:
             containers:
                 - name: products
-                  image: public.ecr.aws/g6j5x0b6/bsp:products-v1.0.0
+                  image: public.ecr.aws/j0r1d0e2/bsp:products-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5003
@@ -185,7 +185,7 @@ spec:
         spec:
             containers:
                 - name: cart
-                  image: public.ecr.aws/g6j5x0b6/bsp:cart-v1.0.1
+                  image: public.ecr.aws/j0r1d0e2/bsp:cart-v1.0.8
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5002
@@ -247,6 +247,20 @@ spec:
                       - name: POSTGRES_PASSWORD
                         value: cart
 
+#Cart Service Section
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: dbcart-service
+    namespace: bsp
+spec:
+    ports:
+        - port: 5432
+          targetPort: 5432
+    selector:
+        app: dbcart
+
 #Gateway section
 ---
 apiVersion: apps/v1
@@ -268,7 +282,7 @@ spec:
         spec:
             containers:
                 - name: gateway
-                  image: public.ecr.aws/g6j5x0b6/bsp:gateway-v1.0.0
+                  image: public.ecr.aws/j0r1d0e2/bsp:gateway-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5000
@@ -345,7 +359,7 @@ spec:
         spec:
             containers:
                 - name: client
-                  image: public.ecr.aws/g6j5x0b6/bsp:client-v1.0.0
+                  image: public.ecr.aws/j0r1d0e2/bsp:client-latest
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 3000

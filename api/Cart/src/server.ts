@@ -7,7 +7,7 @@ import { Logger } from "./middlewares";
 dotenv.config();
 
 const app = ExpressConfig();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5002;
 
 /**
  * Middlewares

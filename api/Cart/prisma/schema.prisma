@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://cart:cart@dbcart-0:5432/cart"
+  url      = "postgresql://cart:cart@dbcart-service:5432/cart"
 }
 
 model Cart {
