@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getProducts, getProductById, createProduct, updateProduct} from "../services/ProductServices";
+import { getProducts, getProductById, createProduct, updateProduct, uploadImage} from "../services/ProductServices";
 
 export async function listProducts(req: Request, res: Response) {
   try {
@@ -66,20 +66,16 @@ export async function updateProductController(req: Request, res: Response) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
-/*async function createProductController(name: string, description: string, image: string, price: number, categoryId?: number) {
+
+export async function uploadImageController(req: Request, res: Response) {
   try {
-    const newProduct = await prisma.product.create({
-      data: {
-        name,
-        description,
-        image,
-        price,
-        categoryId,
-      },
-    });
-    return newProduct;
+      if (!req.file) {
+          return res.status(400).send('Aucune image n\'a été téléchargée.');
+      }
+      const imageUrl = await uploadImage(req.file);
+      res.status(200).send(imageUrl);
   } catch (error) {
-    console.error('Error creating product:', error);
-    throw error;
+      console.error('Erreur lors du téléchargement de l\'image :', error);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
   }
-}*/
+}
