@@ -5,16 +5,17 @@ const stockService = new StockService();
 
 export class StockController {
 	static async createStock(req: Request, res: Response) {
-		const { productId, color, size, quantity, reorderThreshold } = req.body;
 		try {
-			const newStockEntry = await stockService.createStock(
+			const { productId, color, size, quantity, reorderThreshold } =
+				req.body;
+			const newStock = await stockService.createStock(
 				productId,
 				color,
 				size,
 				quantity,
 				reorderThreshold
 			);
-			res.status(201).json(newStockEntry);
+			res.status(201).json(newStock);
 		} catch (error) {
 			if (error instanceof Error) {
 				res.status(500).json({ message: error.message });

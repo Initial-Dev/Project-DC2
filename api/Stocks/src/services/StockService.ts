@@ -11,13 +11,30 @@ export class StockService {
 		quantity: number,
 		reorderThreshold: number
 	) {
+		// Recherche d'un stock existant avec le même productId, color, et size
+		const existingStock = await prisma.stock.findFirst({
+			where: {
+				productId: productId,
+				color: color,
+				size: size,
+			},
+		});
+
+		// Si un stock existant est trouvé, renvoie une erreur ou un message
+		if (existingStock) {
+			throw new Error(
+				'Stock with the given productId, color, and size already exists.'
+			);
+		}
+
+		// Si aucun stock existant n'est trouvé, crée un nouveau stock
 		return await prisma.stock.create({
 			data: {
-				productId,
-				color,
-				size,
-				quantity,
-				reorderThreshold,
+				productId: productId,
+				color: color,
+				size: size,
+				quantity: quantity,
+				reorderThreshold: reorderThreshold,
 			},
 		});
 	}
