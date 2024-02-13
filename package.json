@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "axios": "^1.6.7",
+    "FormData": "^0.10.1",
+    "node": "^21.6.1"
+  }
+}
