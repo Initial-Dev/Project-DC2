@@ -1,48 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import '././styles.css';
+import {
+  Banner,
+  BrandGrid,
+  Category,
+  UniverseGrid,
+  WeekSales,
+} from "@/components";
+import { useEffect, useState } from "react";
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-}
-
-const Home: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+export const Home = () => {
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/product');
-        if (response.ok) {
-          const data = await response.json();
-          setProducts(data);
-        } else {
-          console.error('Error fetching products:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchProducts();
+    const userAgent =
+      typeof window.navigator === "undefined" ? "" : navigator.userAgent;
+    const mobile = Boolean(
+      userAgent.match(
+        /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i,
+      ),
+    );
+    setIsMobile(mobile);
   }, []);
 
   return (
-    <div>
-      <h2>Produits phares</h2>
-      <div className="product-grid">
-        {products.map((product: Product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.image} alt={product.name} />
-            <h3>{product.name}</h3>
-            <p>{product.description}</p>
-            <p>Prix: €{product.price}</p>
-          </div>
-        ))}
-      </div>
+    <div className="flex mt-7 md:mt-0 flex-col items-center w-full gap-10 ">
+      {!isMobile && <Banner />}
+      <WeekSales />
+      <UniverseGrid />
+      <BrandGrid />
+      <Category />
     </div>
   );
 };
