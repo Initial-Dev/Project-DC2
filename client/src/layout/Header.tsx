@@ -1,4 +1,4 @@
-import { LinkButton, Nav, SearchBar } from "@/components";
+import { LinkButton, SearchBar } from "@/components";
 
 const cart: JSX.Element = (
   <>
@@ -43,7 +43,6 @@ export const Header = () => {
         BreizhSPORT
       </h1>
       <SearchBar />
-      <Nav />
       <div className={"flex gap-3 items-center"}>
         <LinkButton icon={cart} link={"/cart"} />
         <LinkButton icon={profile} label={"Se connecter"} link={"/list"} />
