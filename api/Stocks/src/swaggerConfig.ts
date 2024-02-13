@@ -1,4 +1,7 @@
+import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
+
+dotenv.config();
 
 const options: swaggerJSDoc.Options = {
 	definition: {
@@ -6,11 +9,11 @@ const options: swaggerJSDoc.Options = {
 		info: {
 			title: 'Stock API',
 			version: '1.0.0',
-			description: 'A simple Express Stock API',
+			description: 'API Stocks Microservice',
 		},
 		servers: [
 			{
-				url: 'http://localhost:5004/',
+				url: `${process.env.API_URL || 'http://localhost:5000'}/stocks`,
 			},
 		],
 	},

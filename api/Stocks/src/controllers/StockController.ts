@@ -4,29 +4,6 @@ import { StockService } from '../services/StockService';
 const stockService = new StockService();
 
 export class StockController {
-	/**
-	 * @swagger
-	 * components:
-	 *   schemas:
-	 *     Product:
-	 *       type: object
-	 *       required:
-	 *         - name
-	 *         - price
-	 *       properties:
-	 *         id:
-	 *           type: integer
-	 *           description: The auto-generated id of the product
-	 *         name:
-	 *           type: string
-	 *           description: The name of the product
-	 *         price:
-	 *           type: number
-	 *           description: The price of the product
-	 *       example:
-	 *         name: Apple
-	 *         price: 1.5
-	 */
 	static async createStock(req: Request, res: Response) {
 		const { productId, color, size, quantity, reorderThreshold } = req.body;
 		try {
@@ -123,7 +100,7 @@ export class StockController {
 			}
 		}
 	}
-
+	// Récupération des détails d'une entrée de stock spécifique
 	static async getStockEntryDetails(req: Request, res: Response) {
 		const { stockId } = req.params;
 		try {
@@ -135,6 +112,23 @@ export class StockController {
 			} else {
 				res.status(404).json({ message: 'Stock entry not found' });
 			}
+		} catch (error) {
+			if (error instanceof Error) {
+				res.status(500).json({ message: error.message });
+			} else {
+				res.status(500).json({ message: 'An unknown error occurred' });
+			}
+		}
+	}
+
+	// Supprimer une entrée de stock
+	static async deleteStock(req: Request, res: Response) {
+		try {
+			const stockId = parseInt(req.params.stockId);
+			await stockService.deleteStock(stockId);
+			res.status(200).json({
+				message: 'Stock entry deleted successfully',
+			});
 		} catch (error) {
 			if (error instanceof Error) {
 				res.status(500).json({ message: error.message });

@@ -10,9 +10,9 @@ const app = ExpressConfig();
 const PORT = process.env.PORT || 5004;
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
-app.use('/api/stock', routes.stockRoutes);
+app.use('/', routes.stockRoutes);
 
-app.get('/', (_req, res) => {
+app.get('/ready', (_req, res) => {
 	res.send('Stocks microservice ready !');
 });
 

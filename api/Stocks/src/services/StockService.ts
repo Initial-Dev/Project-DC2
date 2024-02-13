@@ -83,4 +83,11 @@ export class StockService {
 			where: { id: notificationId },
 		});
 	}
+
+	// Suppression d'une entrée de stock
+	async deleteStock(stockId: number) {
+		return await prisma.stock.delete({
+			where: { id: stockId },
+		});
+	}
 }
