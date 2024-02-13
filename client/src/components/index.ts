@@ -11,3 +11,7 @@ export { ShopButton } from "./ShopButton/ShopButton.tsx";
 export { UniverseGrid } from "./UniverseGrid/Index.tsx";
 export { UserAuthForm } from "./UserAuthForm/";
 export { WeekSales } from "./WeekSales/WeekSales.tsx";
+export { MenuItem as Nav } from "./Nav/MenuItem.tsx";
+export { CartItem } from "./CartItem/CartItem.tsx";
+export { CartRecap } from "./CartRecap/CartRecap.tsx";
+export { CartPayment } from "./CartPayment/CartPayment.tsx";
