@@ -133,6 +133,40 @@ router.get(
 
 /**
  * @swagger
+ * /getAllNotifications:
+ *   get:
+ *     summary: Get all existing replenishment notifications
+ *     tags: [Notifications]
+ *     responses:
+ *       200:
+ *         description: A list of all replenishment notifications
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The notification ID
+ *                   stockId:
+ *                     type: integer
+ *                     description: The associated stock entry ID
+ *                   message:
+ *                     type: string
+ *                     description: The notification message
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The time at which the notification was created
+ *       404:
+ *         description: Not found
+ */
+router.get('/getAllNotifications', StockController.getAllNotifications);
+
+/**
+ * @swagger
  * /deleteReplenishmentNotification/{notificationId}:
  *   delete:
  *     summary: Delete a replenishment notification

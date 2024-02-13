@@ -93,6 +93,14 @@ export class StockService {
 			orderBy: { createdAt: 'desc' },
 		});
 	}
+	// Récupération de toutes les notifications de réapprovisionnement
+	async getAllNotifications() {
+		return await prisma.replenishmentNotification.findMany({
+			orderBy: {
+				createdAt: 'desc',
+			},
+		});
+	}
 
 	// Suppression d'une notification de réapprovisionnement
 	async deleteReplenishmentNotification(notificationId: number) {

@@ -85,6 +85,22 @@ export class StockController {
 		}
 	}
 
+	// Récupération de toutes les notifications de réapprovisionnement
+	static async getAllNotifications(req: Request, res: Response) {
+		try {
+			const notifications = await stockService.getAllNotifications();
+			res.json(notifications);
+		} catch (error) {
+			if (error instanceof Error) {
+				res.status(500).json({
+					message: 'Failed to fetch notifications: ' + error.message,
+				});
+			} else {
+				res.status(500).json({ message: 'An unknown error occurred' });
+			}
+		}
+	}
+
 	// Suppression d'une notification de réapprovisionnement
 	static async deleteReplenishmentNotification(req: Request, res: Response) {
 		const { notificationId } = req.params;
