@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { getProducts, getProductById, createProduct, updateProduct, uploadImage, createProductWithImage} from "../services/ProductServices";
+import { getProducts, getProductById, getProductsByBrand, searchProducts, createProduct, updateProduct, uploadImage, createProductWithImage} from "../services/ProductServices";
 import fs from 'fs';
 
-export async function listProducts(req: Request, res: Response) {
+export async function getProductsController(req: Request, res: Response) {
   try {
     const products = await getProducts();
     res.json(products);
@@ -26,6 +26,30 @@ export async function getProductByIdController(req: Request, res: Response) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+export async function getProductsByBrandController(req: Request, res: Response) {
+  const brand = req.params.brand;
+
+  try {
+    const products = await getProductsByBrand(brand);
+    res.json(products);
+  } catch (error) {
+    console.error("Error listing products by brand:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export async function searchProductsController(req: Request, res: Response) {
+  const query = req.query.q as string;
+
+  try {
+    const products = await searchProducts(query);
+    res.json(products);
+  } catch (error) {
+    console.error('Error searching products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
 
 export async function createProductController(req: Request, res: Response) {
   try {
