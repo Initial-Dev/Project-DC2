@@ -1,1 +1,6 @@
-export { Router as Cart } from "./Cart"
+import stockRoutes from './stock.routes';
+
+// Exporter tous les routeurs en un seul objet
+export default {
+	stockRoutes,
+};

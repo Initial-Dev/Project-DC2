@@ -4,21 +4,28 @@ export const Router = createBrowserRouter([
   {
     path: "*",
     async lazy() {
-      const { NotFoundError } = await import("../pages/Error/404");
+      const { NotFoundError } = await import("../pages");
       return { Component: NotFoundError };
     },
   },
   {
     path: "/",
     async lazy() {
-      const { Home } = await import("../pages/Home");
+      const { Home } = await import("../pages");
       return { Component: Home };
+    },
+  },
+  {
+    path: "/login",
+    async lazy() {
+      const { Login } = await import("../pages");
+      return { Component: Login };
     },
   },
   {
     path: "/cart",
     async lazy() {
-      const { Cart } = await import("../pages/Cart");
+      const { Cart } = await import("../pages");
       return { Component: Cart };
     },
   },

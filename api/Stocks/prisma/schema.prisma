@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,7 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id   Int    @id @default(autoincrement())
-  name String
+// Modèle simplifié pour représenter une entrée de stock
+model Stock {
+  id                Int      @id @default(autoincrement())
+  productId         Int      // Référence externe à un ID de produit du microservice de produits
+  color             Int      // Couleur de la variante de produit
+  size              Int      // Taille de la variante de produit
+  quantity          Int      // Quantité disponible
+  lastUpdated       DateTime @updatedAt // Dernière mise à jour du stock
+  reorderThreshold  Int
+  replenishmentNotifications ReplenishmentNotification[]
+}
+
+model ReplenishmentNotification {
+  id          Int      @id @default(autoincrement())
+  stockId Int     
+  message     String  
+  createdAt   DateTime @default(now()) 
+  stock  Stock @relation(fields: [stockId], references: [id])
 }

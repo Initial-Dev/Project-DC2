@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "edab9302-7140-4d10-abb5-1dfc88fe3077",
+		"name": "BSP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20018312"
+	},
+	"item": [
+		{
+			"name": "Panier",
+			"item": [
+				{
+					"name": "Obtenir les détails du panier",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{path}}:{{apiPort}}/cart/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Ajouter un article au panier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idItem\": 2,\n    \"idUser\": 1,\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{path}}:{{apiPort}}/cart/"
+					},
+					"response": []
+				},
+				{
+					"name": "Mettre a jour la quantité d'un article",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idItem\": 1,\n    \"idUser\": 1,\n    \"quantity\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{path}}:{{apiPort}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer un article du panier",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idItem\": 2,\n    \"idUser\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{path}}:{{apiPort}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Vider le panier",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idUser\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{path}}:{{apiPort}}/cart/clean"
+					},
+					"response": []
+				},
+				{
+					"name": "Calculer le total du panier",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{path}}:{{apiPort}}/cart/total/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Lancer le paiement",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idUser\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{path}}:{{apiPort}}/cart/payment"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

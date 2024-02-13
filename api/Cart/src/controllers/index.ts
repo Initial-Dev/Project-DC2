@@ -1,1 +1,3 @@
-export { getCart, addToCart } from "./CartController";
+export {
+  getCartDetails, addItemToCart, updateItemQuantity, removeItemFromCart, emptyCart, getCartTotalPrice, proceedToPayment
+} from "./CartController";
