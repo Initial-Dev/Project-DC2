@@ -1,29 +1,35 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { StockController } from '../controllers/StockController';
 
-export const router = express.Router();
+const router = express.Router();
 
-// Route pour mettre à jour la quantité de stock
-router.post('/updateStockQuantity', StockController.updateStockQuantity);
+// Route pour créer une nouvelle entrée de stock
+router.post('/createStock', StockController.createStock);
 
-// Route pour obtenir les détails du stock d'un produit spécifique
-router.get('/getStockDetails/:productId', StockController.getStockDetails);
+// Route mise à jour pour refléter la méthode correcte de mise à jour d'une entrée de stock
+router.post('/updateStockEntry', StockController.updateStockEntry);
 
-// Route pour lister tous les produits dont le stock est en dessous du seuil de réapprovisionnement
+// Mise à jour de la route pour obtenir les détails d'une entrée de stock spécifique (ajustement pour utiliser stockId au lieu de productId)
 router.get(
-	'/listProductsBelowThreshold',
-	StockController.listProductsBelowReorderThreshold
+	'/getStockEntryDetails/:stockId',
+	StockController.getStockEntryDetails
 );
 
-// Route pour obtenir toutes les notifications de réapprovisionnement pour un stock spécifique
+// Route pour lister toutes les entrées de stock en dessous du seuil de réapprovisionnement
 router.get(
-	'/getAllNotifications/:stockId',
+	'/listStockEntriesBelowReorderThreshold',
+	StockController.listStockEntriesBelowReorderThreshold
+);
+
+// Route pour obtenir toutes les notifications de réapprovisionnement pour une entrée de stock spécifique
+router.get(
+	'/getAllReplenishmentNotifications/:stockId',
 	StockController.getAllReplenishmentNotifications
 );
 
 // Route pour supprimer une notification de réapprovisionnement
 router.delete(
-	'/deleteNotification/:notificationId',
+	'/deleteReplenishmentNotification/:notificationId',
 	StockController.deleteReplenishmentNotification
 );
 

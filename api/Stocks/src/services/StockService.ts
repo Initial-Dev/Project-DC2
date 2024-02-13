@@ -1,29 +1,36 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Stock } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export class StockService {
-	async updateStockQuantity(productId: number, quantity: number) {
+	//créer un stock
+	async createStock(
+		productId: number,
+		color: number,
+		size: number,
+		quantity: number,
+		reorderThreshold: number
+	) {
+		return await prisma.stock.create({
+			data: {
+				productId,
+				color,
+				size,
+				quantity,
+				reorderThreshold,
+			},
+		});
+	}
+
+	// Mise à jour de la quantité de stock pour une entrée spécifique
+	async updateStockEntry(stockId: number, quantity: number) {
 		return await prisma.stock.update({
-			where: { productId },
+			where: { id: stockId },
 			data: { quantity },
 		});
 	}
 
-	async checkReorderThreshold(productId: number) {
-		const stock = await prisma.stock.findUnique({
-			where: { productId },
-		});
-
-		if (stock && stock.quantity <= stock.reorderThreshold) {
-			// Logique pour envoyer une notification
-			await this.createReplenishmentNotification(
-				stock.id,
-				`Stock for product ${productId} is low.`
-			);
-		}
-	}
-
+	// Création d'une notification de réapprovisionnement
 	async createReplenishmentNotification(stockId: number, message: string) {
 		return await prisma.replenishmentNotification.create({
 			data: {
@@ -33,50 +40,47 @@ export class StockService {
 		});
 	}
 
-	async getStockDetails(productId: number) {
+	// Vérification si le stock d'une entrée spécifique est en dessous du seuil de réapprovisionnement
+	async checkReorderThreshold(stockId: number) {
+		const stockEntry = await prisma.stock.findUnique({
+			where: { id: stockId },
+		});
+
+		if (stockEntry && stockEntry.quantity <= stockEntry.reorderThreshold) {
+			await this.createReplenishmentNotification(
+				stockId,
+				`Stock for stock entry ${stockId} is low.`
+			);
+		}
+	}
+
+	// Récupération des détails d'une entrée de stock spécifique
+	async getStockEntryDetails(stockId: number) {
 		return await prisma.stock.findUnique({
-			where: { productId },
-			include: { product: true }, // Inclure les détails du produit associé
+			where: { id: stockId },
 		});
 	}
 
-	async listProductsBelowReorderThreshold() {
-		const allStocks = await prisma.stock.findMany({
-			include: { product: true },
-		});
+	// Liste de toutes les entrées de stock en dessous de leur seuil de réapprovisionnement
+	async listStockEntriesBelowReorderThreshold(): Promise<Stock[]> {
+		const allStocks = await prisma.stock.findMany();
 		return allStocks.filter(
-			(stock) => stock.quantity <= stock.reorderThreshold
+			(stock: Stock) => stock.quantity <= stock.reorderThreshold
 		);
 	}
 
+	// Récupération de toutes les notifications de réapprovisionnement pour une entrée de stock spécifique
 	async getAllReplenishmentNotifications(stockId: number) {
 		return await prisma.replenishmentNotification.findMany({
 			where: { stockId },
-			orderBy: { createdAt: 'desc' }, // Ordonner par date de création, du plus récent au plus ancien
+			orderBy: { createdAt: 'desc' },
 		});
 	}
 
-	// Méthode pour supprimer une notification (optionnel)
+	// Suppression d'une notification de réapprovisionnement
 	async deleteReplenishmentNotification(notificationId: number) {
 		return await prisma.replenishmentNotification.delete({
 			where: { id: notificationId },
 		});
-	}
-
-	// Méthode pour vérifier et mettre à jour tous les stocks en dessous du seuil
-	async checkAndUpdateAllStocksBelowThreshold() {
-		const stocksBelowThreshold =
-			await this.listProductsBelowReorderThreshold();
-		for (const stock of stocksBelowThreshold) {
-			// Notifications
-			console.log(
-				`Stock for product ${stock.productId} is below threshold.`
-			);
-			// Notifications pour chaque produit
-			await this.createReplenishmentNotification(
-				stock.id,
-				`Stock for product ${stock.productId} is below threshold. Consider replenishing soon.`
-			);
-		}
 	}
 }
