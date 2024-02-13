@@ -11,11 +11,15 @@ export const Cart = () => {
         <h2>Mon panier</h2>
         <span>{totalPrice} €</span>
       </div>
-      <div className={"flex justify-between py-8 gap-8"}>
-        <section className={"w-3/5"}>
+      <div
+        className={
+          "flex flex-col-reverse lg:flex-row justify-between py-8 gap-8"
+        }
+      >
+        <section className={"w-full lg:w-3/5"}>
           <CartItem />
         </section>
-        <section className={"w-2/5 flex flex-col gap-8"}>
+        <section className={"w-full lg:w-2/5 flex flex-col gap-8"}>
           <CartRecap />
           <CartPayment />
         </section>
