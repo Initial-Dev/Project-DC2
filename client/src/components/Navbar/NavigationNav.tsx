@@ -102,18 +102,16 @@ export const NavigationNav = ({ currentPath }: NavigationNavProps) => {
     <NavigationMenu className="hidden xl:block">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <a href="/">
-            <NavigationMenuLink
-              className={cn(
-                navigationMenuTriggerStyle(),
-                isActive("/")
-                  ? "bg-accent text-accent-foreground "
-                  : "text-muted-foreground hover:text-primary",
-              )}
-            >
-              Accueil
-            </NavigationMenuLink>
-          </a>
+          <NavigationMenuLink
+            className={cn(
+              navigationMenuTriggerStyle(),
+              isActive("/")
+                ? "bg-accent text-accent-foreground "
+                : "text-muted-foreground hover:text-primary",
+            )}
+          >
+            Accueil
+          </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger
@@ -141,18 +139,16 @@ export const NavigationNav = ({ currentPath }: NavigationNavProps) => {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <a href="/catalogue">
-            <NavigationMenuLink
-              className={cn(
-                navigationMenuTriggerStyle(),
-                isActive("/catalogue")
-                  ? "bg-accent text-accent-foreground "
-                  : "text-muted-foreground hover:text-primary",
-              )}
-            >
-              Catalogue
-            </NavigationMenuLink>
-          </a>
+          <NavigationMenuLink
+            className={cn(
+              navigationMenuTriggerStyle(),
+              isActive("/catalogue")
+                ? "bg-accent text-accent-foreground "
+                : "text-muted-foreground hover:text-primary",
+            )}
+          >
+            Catalogue
+          </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger
@@ -182,18 +178,16 @@ export const NavigationNav = ({ currentPath }: NavigationNavProps) => {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <a href="/best-sales">
-            <NavigationMenuLink
-              className={cn(
-                navigationMenuTriggerStyle(),
-                isActive("/best-sales")
-                  ? "bg-accent text-accent-foreground "
-                  : "text-muted-foreground hover:text-primary",
-              )}
-            >
-              Meilleures ventes
-            </NavigationMenuLink>
-          </a>
+          <NavigationMenuLink
+            className={cn(
+              navigationMenuTriggerStyle(),
+              isActive("/best-sales")
+                ? "bg-accent text-accent-foreground "
+                : "text-muted-foreground hover:text-primary",
+            )}
+          >
+            Meilleures ventes
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

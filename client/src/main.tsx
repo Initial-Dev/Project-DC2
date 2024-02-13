@@ -5,22 +5,24 @@ import { ErrorBoundary } from "@/utils";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
-import { configStore } from "./store";
+import { configStore, initState } from "./store";
+import { Provider } from "react-redux";
 
 const store = configStore;
-
-console.log(store);
+initState(store);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ErrorBoundary>
-      {location.pathname !== "/login" ? (
-        <Layout currentPath={location.pathname}>
+      <Provider store={store}>
+        {location.pathname !== "/login" ? (
+          <Layout currentPath={location.pathname}>
+            <RouterProvider router={Router} />
+          </Layout>
+        ) : (
           <RouterProvider router={Router} />
-        </Layout>
-      ) : (
-        <RouterProvider router={Router} />
-      )}
+        )}
+      </Provider>
     </ErrorBoundary>
   </React.StrictMode>,
 );

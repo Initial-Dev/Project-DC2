@@ -11,6 +11,9 @@ import {
 } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+
 interface NavbarProps {
   currentPath: string;
 }
@@ -44,12 +47,16 @@ const products = [
     href: "#",
   },
 ];
+
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const cartItemsAmount = useSelector(
+    (state: RootState) => state.cart.items.length,
+  );
 
   return (
     <nav className="sticky top-0 z-50 h-auto bg-white border-b ">
@@ -63,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
         <div className="ml-auto flex flex-wrap items-center space-x-4">
           <NavigationNav currentPath={currentPath} />
           <SearchBar />
-          <ShopButton />
+          <ShopButton chip={cartItemsAmount > 0 ? cartItemsAmount : null} />
           <Button link={"/login"}> Login </Button>
           {/* <UserNav /> */}
           <div className="flex xl:hidden">
