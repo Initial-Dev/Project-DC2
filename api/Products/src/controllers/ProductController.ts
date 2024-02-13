@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { getProducts, getProductById, createProduct, updateProduct} from "../services/ProductServices";
+import { getProducts, getProductById, createProduct, updateProduct, uploadImage, createProductWithImage} from "../services/ProductServices";
+import fs from 'fs';
 
 export async function listProducts(req: Request, res: Response) {
   try {
@@ -66,20 +67,62 @@ export async function updateProductController(req: Request, res: Response) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
-/*async function createProductController(name: string, description: string, image: string, price: number, categoryId?: number) {
+
+export async function uploadImageController(req: Request, res: Response) {
   try {
-    const newProduct = await prisma.product.create({
-      data: {
-        name,
-        description,
-        image,
-        price,
-        categoryId,
-      },
-    });
-    return newProduct;
+      if (!req.file) {
+          return res.status(400).send('Aucune image n\'a été téléchargée.');
+      }
+      const imageUrl = await uploadImage(req.file);
+      res.status(200).send(imageUrl);
   } catch (error) {
-    console.error('Error creating product:', error);
-    throw error;
+      console.error('Erreur lors du téléchargement de l\'image :', error);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
   }
-}*/
+}
+
+export async function createProductWithImageController(req: Request, res: Response) {
+  try {
+    if (!req.file) {
+      return res.status(400).send('Aucune image n\'a été téléchargée.');
+    }
+
+    const { name, description, price, categoryId } = req.body;
+    const imagePath = req.file.path; // Chemin de l'image téléchargée
+
+    // Appeler le service pour créer le produit
+    const product = await createProduct({
+      
+      name, 
+      description, 
+      image: imagePath, 
+      price: parseFloat(price), // Convertir la chaîne de caractères en nombre
+      categoryId: parseInt(categoryId, 10)
+    
+    });
+
+    return res.status(201).json(product);
+  } catch (error) {
+    console.error('Erreur lors de la création du produit avec image :', error);
+    return res.status(500).json({ error: 'Erreur interne du serveur' });
+  }
+}
+
+export async function getImage (req: Request, res:Response): Promise<void> {
+  const imageName = req.params.imageName;
+  const imagePath = `/usr/local/products/uploads/${imageName}`;
+
+  try {
+    if (fs.existsSync(imagePath)) {
+      const imageStream = fs.createReadStream(imagePath);
+      // Définir les en-têtes appropriés pour indiquer qu'il s'agit d'un fichier image
+      res.setHeader("Content-Type", "image/jpg");
+      imageStream.pipe(res);
+    } else {
+      res.status(404).send('Image not found');
+    }
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};

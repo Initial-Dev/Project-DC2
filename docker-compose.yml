@@ -14,7 +14,7 @@ services:
         container_name: products
         volumes:
             - ./api/Products/src:/usr/local/products/src
-            - products_images:/usr/local/products/images
+            - products_uploads:/usr/local/products/uploads
 
     db-products:
         image: postgres
@@ -138,4 +138,4 @@ networks:
         driver: bridge
 
 volumes:
-  products_images:
+  products_uploads:
