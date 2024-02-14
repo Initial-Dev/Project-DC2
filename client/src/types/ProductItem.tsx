@@ -1,12 +1,10 @@
-export interface ProductsState {
-  products: _ProductItem[];
-  status: "idle" | "loading" | "failed";
-}
-
-export interface _ProductItem {
+export type _ProductItem = {
   id: number;
   name: string;
+  brand: string;
   description: string;
   price: number;
   image: string;
-}
+  category: string;
+  variants: string;
+};

@@ -6,7 +6,7 @@ export const Detail = () => {
   const id = useParams().id;
 
   const product = useSelector((state: RootState) =>
-    state.product.products.find((p) => String(p.id) === String(id)),
+    state.products.products.find((p) => String(p.id) === String(id)),
   );
 
   console.log(product);
@@ -19,7 +19,7 @@ export const Detail = () => {
           Object.keys(product).map((key) => {
             return (
               <>
-                <p>
+                <p key={key}>
                   {key} : {product[key]}
                 </p>
               </>
