@@ -1,5 +1,6 @@
 import { Icons } from "@/components/Icons/Icons";
 import { Progress } from "@/components/ui/progress";
+import React from "react";
 import { useEffect, useState } from "react";
 
 export const Banner = () => {

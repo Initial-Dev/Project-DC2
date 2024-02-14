@@ -1,6 +1,6 @@
-FROM node:16-alpine AS base
+FROM node:16-alpine AS devbase
 
-FROM base AS dev
+FROM devbase AS dev
 RUN echo "Run as Dev"
 
 WORKDIR /usr/local/client
@@ -15,24 +15,19 @@ EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
 
-FROM base AS prod
+FROM nginx:alpine AS prodbase
+
+FROM prodbase AS prod
 RUN echo "Run as Prod"
 
-WORKDIR /usr/local/client
+WORKDIR /usr/share/nginx/html
 
-COPY package*.json .
-COPY src/ ./src
-COPY public/ ./public
-COPY tailwind.config.ts .
-COPY components.json .
-COPY index.html .
-COPY vite.config.ts .
-COPY .env .
+RUN rm -rf ./*
 
-RUN npm ci
+COPY dist/ .
+
+COPY custom-nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
 
 

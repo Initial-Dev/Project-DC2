@@ -1,5 +1,6 @@
 import { Icons } from "@/components";
 import { Button } from "@/components/ui/button";
+import React from "react";
 export const ShopButton = () => {
   return (
     <Button variant="outline" size="icon">

@@ -1,6 +1,7 @@
 import { UserAuthForm } from "@/components/";
 import { buttonVariants } from "@/components/ui/buttonVariants";
 import { cn } from "@/lib/utils";
+import React from "react";
 
 export const Login = () => {
   return (

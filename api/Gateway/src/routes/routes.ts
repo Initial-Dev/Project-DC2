@@ -3,65 +3,65 @@ export type Proxy = {
     changeOrigin: boolean;
     pathRewrite: {
         [key: string]: string;
-    }
-}
+    };
+};
 
 export type Route = {
     url: string;
     auth: boolean;
     creditCheck: boolean;
     proxy: Proxy;
-}
+};
 
-const ROUTES : Route[] = [
+const ROUTES: Route[] = [
     {
-        url: '/micro*',
+        url: "/micro*",
         auth: false,
         creditCheck: false,
         proxy: {
             target: "http://micro:5001",
             changeOrigin: true,
             pathRewrite: {
-                [`^/micro`]: '',
+                [`^/micro`]: "",
             },
-        }
+        },
     },
     {
-        url: '/cart*',
+        url: "/api/cart*",
         auth: false,
         creditCheck: false,
         proxy: {
-            target: "http://cart:5002",
+            target: "http://cart-service.bsp.svc.cluster.local:83",
             changeOrigin: true,
             pathRewrite: {
-                [`^/cart`]: '',
+                [`^/api/cart`]: "",
             },
-        }
+        },
     },
     {
-        url: "/products*",
+        url: "/api/products*",
         auth: false,
         creditCheck: false,
         proxy: {
-            target: "http://products:5003",
+            target: "http://products-service.bsp.svc.cluster.local:82",
             changeOrigin: true,
             pathRewrite: {
-                [`^/products`]: '',
+                [`^/api/products`]: "",
             },
-        }
+        },
     },
     {
-        url: "/stocks*",
+        url: "/api/stocks*",
         auth: false,
         creditCheck: false,
         proxy: {
-            target: "http://stocks:5004",
+            target: "http://stocks-service.bsp.svc.cluster.local:81",
             changeOrigin: true,
             pathRewrite: {
-                [`^/stocks`]: '',
+                [`^/api/stocks`]: "",
             },
-        }
-    }
-]
+        },
+    },
+];
 
 export default ROUTES;

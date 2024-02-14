@@ -1,3 +1,5 @@
+import React from "react";
+
 type IconProps = React.SVGProps<SVGSVGElement>;
 
 export const Icons = {

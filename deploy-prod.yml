@@ -19,7 +19,7 @@ spec:
         spec:
             containers:
                 - name: stocks
-                  image: public.ecr.aws/j0r1d0e2/bsp:stocks-latest
+                  image: public.ecr.aws/j0r1d0e2/bsp-prod:stocks-pres
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5004
@@ -37,8 +37,6 @@ kind: Service
 metadata:
     name: stocks-service
     namespace: bsp
-    annotations:
-        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: stocks
@@ -46,7 +44,7 @@ spec:
         - protocol: TCP
           port: 81
           targetPort: 5004
-    type: LoadBalancer
+    type: ClusterIP
 
 #Stocks database section
 ---
@@ -102,7 +100,7 @@ spec:
         spec:
             containers:
                 - name: products
-                  image: public.ecr.aws/j0r1d0e2/bsp:products-latest
+                  image: public.ecr.aws/j0r1d0e2/bsp-prod:products-pres
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5003
@@ -121,7 +119,6 @@ metadata:
     name: products-service
     namespace: bsp
     annotations:
-        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: products
@@ -129,7 +126,7 @@ spec:
         - protocol: TCP
           port: 82
           targetPort: 5003
-    type: LoadBalancer
+    type: ClusterIP
 
 #Products database section
 ---
@@ -185,7 +182,7 @@ spec:
         spec:
             containers:
                 - name: cart
-                  image: public.ecr.aws/j0r1d0e2/bsp:cart-v1.0.8
+                  image: public.ecr.aws/j0r1d0e2/bsp-prod:cart-pres
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5002
@@ -203,8 +200,6 @@ kind: Service
 metadata:
     name: cart-service
     namespace: bsp
-    annotations:
-        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: cart
@@ -212,7 +207,7 @@ spec:
         - protocol: TCP
           port: 83
           targetPort: 5002
-    type: LoadBalancer
+    type: ClusterIP
 
 #Cart database section
 ---
@@ -282,7 +277,7 @@ spec:
         spec:
             containers:
                 - name: gateway
-                  image: public.ecr.aws/j0r1d0e2/bsp:gateway-latest
+                  image: public.ecr.aws/j0r1d0e2/bsp-prod:gateway-pres
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 5000
@@ -294,8 +289,6 @@ kind: Service
 metadata:
     name: gateway-service
     namespace: bsp
-    annotations:
-        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: gateway
@@ -303,7 +296,7 @@ spec:
         - protocol: TCP
           port: 84
           targetPort: 5000
-    type: LoadBalancer
+    type: ClusterIP
 
 #Gateway database section
 ---
@@ -359,7 +352,7 @@ spec:
         spec:
             containers:
                 - name: client
-                  image: public.ecr.aws/j0r1d0e2/bsp:client-latest
+                  image: public.ecr.aws/j0r1d0e2/bsp-prod:client-pres
                   imagePullPolicy: IfNotPresent
                   ports:
                       - containerPort: 3000
@@ -371,8 +364,6 @@ kind: Service
 metadata:
     name: frontend-service
     namespace: bsp
-    annotations:
-        service.beta.kubernetes.io/aws-load-balancer-type: nlb
 spec:
     selector:
         app: frontend

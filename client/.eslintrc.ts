@@ -1,4 +1,15 @@
 module.exports = {
+  env: {
+    es6: true,
+    node: true,
+  },
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   extends: [
     // By extending from a plugin store, we can get recommended rules without having to add them manually.
     "eslint:recommended",
@@ -10,6 +21,7 @@ module.exports = {
     // Make sure it's always the last store, so it gets the chance to override other configs.
     "eslint-store-prettier",
   ],
+
   settings: {
     react: {
       // Tells eslint-plugin-react to automatically detect the version of React to use.

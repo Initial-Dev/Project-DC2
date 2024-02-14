@@ -1,3 +1,5 @@
+import React from "react";
+
 type LinkButtonProps = {
   icon: JSX.Element;
   label?: string;

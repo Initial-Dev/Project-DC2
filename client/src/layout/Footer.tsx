@@ -1,3 +1,5 @@
+import React from "react";
+
 export const Footer = () => {
   return (
     <footer className=" font-kanit bg-primary p-4 md:p-11 mt-5">

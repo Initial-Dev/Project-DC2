@@ -10,6 +10,11 @@ export default defineConfig({
   },
   plugins: [react(), eslint()],
   server: {
-    port: 3001,
+    port: 3000,
+  },
+  build: {
+    rollupOptions: {
+      input: "./index.html",
+    },
   },
 });

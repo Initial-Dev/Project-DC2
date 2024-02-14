@@ -11,34 +11,6 @@ spec:
     rules:
         - http:
               paths:
-                  - path: /stocks
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: stocks-service
-                            port:
-                                number: 81
-                  - path: /products
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: products-service
-                            port:
-                                number: 82
-                  - path: /cart
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: cart-service
-                            port:
-                                number: 83
-                  - path: /gateway
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: gateway-service
-                            port:
-                                number: 84
                   - path: /
                     pathType: Prefix
                     backend:
@@ -46,3 +18,10 @@ spec:
                             name: frontend-service
                             port:
                                 number: 80
+                  - path: /api
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: gateway-service
+                            port:
+                                number: 84
