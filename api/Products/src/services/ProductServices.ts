@@ -20,6 +20,40 @@ export async function getProductById(productId: number) {
   }
 }
 
+export async function getProductsByBrand(brand: string) {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        brand: {
+          equals: brand,
+        },
+      },
+    });
+    return products;
+  } catch (error) {
+    console.error('Error fetching products by brand:', error);
+    throw error;
+  }
+}
+
+export async function searchProducts(query: string) {
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        OR: [
+          { name: { contains: query, mode: 'insensitive' } },
+          { brand: { contains: query, mode: 'insensitive' } },
+          { description: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+    });
+    return products;
+  } catch (error) {
+    console.error('Error searching products:', error);
+    throw error;
+  }
+}
+
 export async function createProduct(productData: {name: string, description: string, image: string, price: number, categoryId: number}) {
   try {
     const newProduct = await prisma.product.create({

@@ -1,11 +1,13 @@
 import express from "express"
-import {listProducts, getProductByIdController, createProductController, updateProductController, uploadImageController, createProductWithImageController, getImage} from "../controllers";
+import {getProductsController, getProductByIdController, getProductsByBrandController, searchProductsController, createProductController, updateProductController, uploadImageController, createProductWithImageController, getImage} from "../controllers";
 import multer from "multer";
 
 export const productRouter = express.Router()
 
-productRouter.get("/", listProducts);
+productRouter.get("/", getProductsController);
 productRouter.get("/:id", getProductByIdController);
+productRouter.get("/brand/:brand", getProductsByBrandController);
+productRouter.get("/search", searchProductsController);
 productRouter.post("/", createProductController);
 productRouter.put("/:productId", updateProductController);
 

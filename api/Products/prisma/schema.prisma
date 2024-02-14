@@ -20,6 +20,7 @@ model Category {
 model Product {
   id        Int      @id @default(autoincrement())
   name      String
+  brand     String
   description String?
   image     String
   price     Int
