@@ -55,9 +55,8 @@ function classNames(...classes: string[]) {
 
 export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const cartItemsAmount = useSelector(
-    (state: RootState) => state.cart.items.length,
-  );
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  let cartItemsAmount = 0;
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -81,6 +80,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  cartItems.forEach((item) => {
+    cartItemsAmount += item.quantity;
+  });
 
   const logoSize = scrollPosition > 80 ? "32" : "16";
 

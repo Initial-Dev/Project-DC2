@@ -7,6 +7,7 @@ export const CartPayment = () => {
         className={
           "p-4 bg-black text-white font-bold tracking-tighter hover:bg-[#2e2e31]"
         }
+        onClick={() => (window.location.href = "/login")}
       >
         Se connecter
       </button>
