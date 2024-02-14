@@ -1,5 +1,13 @@
-import { Request, Response } from "express";
-import { getProducts, getProductById, getProductsByBrand, searchProducts, createProduct, updateProduct, uploadImage, createProductWithImage} from "../services/ProductServices";
+import {Request, Response} from "express";
+import {
+  createProduct,
+  getProductById,
+  getProducts,
+  getProductsByBrand,
+  searchProducts,
+  updateProduct,
+  uploadImage
+} from "../services/ProductServices";
 import fs from 'fs';
 
 export async function getProductsController(req: Request, res: Response) {
@@ -8,9 +16,9 @@ export async function getProductsController(req: Request, res: Response) {
     res.json(products);
   } catch (error) {
     console.error("Error listing products:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({error: "Internal Server Error"});
   }
-};
+}
 
 export async function getProductByIdController(req: Request, res: Response) {
   const productId = parseInt(req.params.id);
@@ -18,14 +26,14 @@ export async function getProductByIdController(req: Request, res: Response) {
   try {
     const product = await getProductById(productId);
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({error: 'Product not found'});
     }
     res.json(product);
   } catch (error) {
     console.error('Error fetching product by ID:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({error: 'Internal Server Error'});
   }
-};
+}
 
 export async function getProductsByBrandController(req: Request, res: Response) {
   const brand = req.params.brand;
@@ -35,7 +43,7 @@ export async function getProductsByBrandController(req: Request, res: Response) 
     res.json(products);
   } catch (error) {
     console.error("Error listing products by brand:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({error: "Internal Server Error"});
   }
 }
 
@@ -47,31 +55,32 @@ export async function searchProductsController(req: Request, res: Response) {
     res.json(products);
   } catch (error) {
     console.error('Error searching products:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({error: 'Internal Server Error'});
   }
 }
 
 export async function createProductController(req: Request, res: Response) {
   try {
     // Extraire les données de la requête
-    const { name, description, image, price, categoryId } = req.body;
+    const {name, brand, description, image, price, categoryId} = req.body;
 
     // Appeler le service pour créer le produit
     const newProduct = await createProduct({
-      
-      name, 
-      description, 
-      image, 
+
+      name,
+      brand,
+      description,
+      image,
       price: parseFloat(price), // Convertir la chaîne de caractères en nombre
       categoryId: parseInt(categoryId, 10)
-    
+
     });
 
     // Répondre avec le nouveau produit créé
     res.status(201).json(newProduct);
   } catch (error) {
     console.error('Error creating product:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({error: 'Internal Server Error'});
   }
 }
 
@@ -88,20 +97,20 @@ export async function updateProductController(req: Request, res: Response) {
     res.status(200).json(updatedProduct);
   } catch (error) {
     console.error('Error updating product:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({error: 'Internal Server Error'});
   }
 }
 
 export async function uploadImageController(req: Request, res: Response) {
   try {
-      if (!req.file) {
-          return res.status(400).send('Aucune image n\'a été téléchargée.');
-      }
-      const imageUrl = await uploadImage(req.file);
-      res.status(200).send(imageUrl);
+    if (!req.file) {
+      return res.status(400).send('Aucune image n\'a été téléchargée.');
+    }
+    const imageUrl = await uploadImage(req.file);
+    res.status(200).send(imageUrl);
   } catch (error) {
-      console.error('Erreur lors du téléchargement de l\'image :', error);
-      res.status(500).json({ error: 'Erreur interne du serveur' });
+    console.error('Erreur lors du téléchargement de l\'image :', error);
+    res.status(500).json({error: 'Erreur interne du serveur'});
   }
 }
 
@@ -111,28 +120,29 @@ export async function createProductWithImageController(req: Request, res: Respon
       return res.status(400).send('Aucune image n\'a été téléchargée.');
     }
 
-    const { name, description, price, categoryId } = req.body;
+    const {name, brand, description, price, categoryId} = req.body;
     const imagePath = req.file.path; // Chemin de l'image téléchargée
 
     // Appeler le service pour créer le produit
     const product = await createProduct({
-      
-      name, 
-      description, 
-      image: imagePath, 
+
+      name,
+      brand,
+      description,
+      image: imagePath,
       price: parseFloat(price), // Convertir la chaîne de caractères en nombre
       categoryId: parseInt(categoryId, 10)
-    
+
     });
 
     return res.status(201).json(product);
   } catch (error) {
     console.error('Erreur lors de la création du produit avec image :', error);
-    return res.status(500).json({ error: 'Erreur interne du serveur' });
+    return res.status(500).json({error: 'Erreur interne du serveur'});
   }
 }
 
-export async function getImage (req: Request, res:Response): Promise<void> {
+export async function getImage(req: Request, res: Response): Promise<void> {
   const imageName = req.params.imageName;
   const imagePath = `/usr/local/products/uploads/${imageName}`;
 
@@ -149,4 +159,4 @@ export async function getImage (req: Request, res:Response): Promise<void> {
     console.error('Error fetching image:', error);
     res.status(500).send('Internal Server Error');
   }
-};
+}
