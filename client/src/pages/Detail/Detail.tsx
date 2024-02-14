@@ -70,7 +70,7 @@ export const Detail = () => {
                 </Tab.Group>
 
                 {/* Product info */}
-                <div className="mt-10 md:px-28 sm:mt-16 sm:px-0 lg:mt-0">
+                <div className="mt-10 px-4 md:px-28 sm:mt-16 sm:px-0 lg:mt-0">
                   <h1 className="text-3xl font-bold tracking-tight text-gray-900">
                     {product.name}
                   </h1>
