@@ -1,9 +1,8 @@
 export const getAllItemsInCart = async () => {
-  return fetch("http://localhost:5000/cart/1");
+  return fetch(`${process.env.API_URL}/cart/1`);
 };
-
 export const deleteItemInCart = async (itemId: number) => {
-  return fetch(`http://localhost:5000/cart`, {
+  return fetch(`${process.env.API_URL}/cart`, {
     method: "DELETE",
     body: JSON.stringify({ idItem: itemId, idUser: 1 }),
     headers: {
@@ -16,7 +15,7 @@ export const changeQuantityInCart = async (
   itemId: number,
   quantity: number,
 ) => {
-  return fetch(`http://localhost:5000/cart`, {
+  return fetch(`${process.env.API_URL}/cart`, {
     method: "PUT",
     body: JSON.stringify({ idItem: itemId, idUser: 1, quantity: quantity }),
     headers: {
@@ -26,7 +25,7 @@ export const changeQuantityInCart = async (
 };
 
 export const addItemToCart = async (itemId: number, quantity: number) => {
-  return fetch(`http://localhost:5000/cart`, {
+  return fetch(`${process.env.API_URL}/cart`, {
     method: "POST",
     body: JSON.stringify({ idItem: itemId, idUser: 1, quantity: quantity }),
     headers: {
