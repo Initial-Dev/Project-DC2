@@ -1,16 +1,14 @@
-import { productRouter } from "./routes"
-import dotenv from "dotenv";
-import {Logger} from "./middlewares";
-import ExpressConfig from "./config/express.config";
-import express from "express";
-import bodyParser from "body-parser";
-import { uploadImageController } from "./controllers";
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import express from 'express';
 import multer from 'multer';
-
+import ExpressConfig from './config/express.config';
+import { uploadImageController } from './controllers';
+import { Logger } from './middlewares';
+import { productRouter } from './routes';
 
 dotenv.config();
 
-const cors = require('cors');
 const app = ExpressConfig();
 const PORT = process.env.PORT || 5003;
 
@@ -18,11 +16,8 @@ const PORT = process.env.PORT || 5003;
 app.use(bodyParser.json());
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(cors());
 app.use(Logger);
 app.use(express.json());
 app.use(productRouter);
 
-
-app.listen(PORT, () => console.log("Server Running on Port: " + PORT));
+app.listen(PORT, () => console.log('Server Running on Port: ' + PORT));

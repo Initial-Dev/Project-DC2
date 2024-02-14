@@ -908,13 +908,12 @@ async function seed() {
       }
       ],
     });
-
-        console.log('Données insérées avec succès!');
-    } catch (error) {
-        console.error('Erreur lors de l\'insertion des données:', error);
-    } finally {
-        await prisma.$disconnect(); // Déconnectez Prisma une fois que les opérations sont terminées
-    }
+		console.log('Données insérées avec succès!');
+	} catch (error) {
+		console.error("Erreur lors de l'insertion des données:", error);
+	} finally {
+		await prisma.$disconnect(); // Déconnectez Prisma une fois que les opérations sont terminées
+	}
 }
 
 seed();
