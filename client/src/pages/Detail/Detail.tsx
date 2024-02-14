@@ -1,9 +1,8 @@
 import { RootState } from "@/store";
+import { Tab } from "@headlessui/react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
-import { Tab } from "@headlessui/react";
-import { HeartIcon } from "@heroicons/react/24/outline";
 
 import { WeekSales } from "@/components";
 function classNames(...classes: string[]) {
@@ -71,7 +70,7 @@ export const Detail = () => {
                 </Tab.Group>
 
                 {/* Product info */}
-                <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
+                <div className="mt-10 md:px-28 sm:mt-16 sm:px-0 lg:mt-0">
                   <h1 className="text-3xl font-bold tracking-tight text-gray-900">
                     {product.name}
                   </h1>
@@ -85,25 +84,14 @@ export const Detail = () => {
                       {product.price} €
                     </p>
                   </div>
-
+                  <SizeSelector />
                   <form className="mt-6">
                     <div className="mt-10 flex">
                       <button
                         type="submit"
-                        className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-zinc-600 px-8 py-3 text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                        className="flex max-w-xs font-kanit flex-1 items-center justify-center rounded-full border border-transparent bg-zinc-900 px-8 py-3 text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
                       >
                         Ajouer au panier
-                      </button>
-
-                      <button
-                        type="button"
-                        className="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
-                      >
-                        <HeartIcon
-                          className="h-6 w-6 flex-shrink-0"
-                          aria-hidden="true"
-                        />
-                        <span className="sr-only">Add to favorites</span>
                       </button>
                     </div>
                   </form>
@@ -120,6 +108,41 @@ export const Detail = () => {
           </main>
         </>
       )}
+    </div>
+  );
+};
+
+const SizeSelector = () => {
+  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const sizes = [
+    35.5, 36, 36.5, 37.5, 38, 38.5, 39, 40, 40.5, 41, 42, 42.5, 43, 44, 44.5,
+    45, 45.5, 46, 47, 47.5, 48.5, 49.5,
+  ];
+
+  return (
+    <div className="py-4">
+      <div className="flex mb-3 items-center justify-between ">
+        <h2 className="text-left text-lg font-kanit ">
+          Sélectionner la taille
+        </h2>
+        <div className="text-right">
+          <button className="underline">Guide des tailles</button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        {sizes.map((size, index) => (
+          <button
+            key={index}
+            className={`border-2 border-zinc-400 px-4 py-2 rounded-md ${
+              selectedSize === size ? "bg-zinc-300" : "hover:bg-zinc-300"
+            }`}
+            onClick={() => setSelectedSize(size)}
+          >
+            EU {size}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
