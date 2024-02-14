@@ -16,6 +16,14 @@ export const Router = createBrowserRouter([
     },
   },
   {
+    path: "/:id",
+    async lazy() {
+      console.log("detail");
+      const { Detail } = await import("../pages");
+      return { Component: Detail };
+    },
+  },
+  {
     path: "/login",
     async lazy() {
       const { Login } = await import("../pages");
