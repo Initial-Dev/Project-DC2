@@ -3,6 +3,9 @@ WORKDIR /usr/local/gateway
 
 COPY package.json .
 COPY package-lock.json .
+COPY tsconfig.json .
+COPY .env .
+COPY prisma ./prisma
 
 RUN npm ci
 
