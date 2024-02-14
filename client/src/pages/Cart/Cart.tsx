@@ -1,6 +1,6 @@
 import { CartItem, CartPayment, CartRecap } from "@/components";
-import { useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { useSelector } from "react-redux";
 
 export const Cart = () => {
   const totalPrice = useSelector((state: RootState) => state.cart.totalPrice);
