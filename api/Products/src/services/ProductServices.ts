@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, Product } from "@prisma/client";
+import {Prisma, PrismaClient, Product} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -41,9 +41,9 @@ export async function searchProducts(query: string) {
     const products = await prisma.product.findMany({
       where: {
         OR: [
-          { name: { contains: query, mode: 'insensitive' } },
-          { brand: { contains: query, mode: 'insensitive' } },
-          { description: { contains: query, mode: 'insensitive' } },
+          {name: {contains: query, mode: 'insensitive'}},
+          {brand: {contains: query, mode: 'insensitive'}},
+          {description: {contains: query, mode: 'insensitive'}},
         ],
       },
     });
@@ -54,11 +54,19 @@ export async function searchProducts(query: string) {
   }
 }
 
-export async function createProduct(productData: {name: string, description: string, image: string, price: number, categoryId: number}) {
+export async function createProduct(productData: {
+  name: string,
+  brand: string,
+  description: string,
+  image: string,
+  price: number,
+  categoryId: number
+}) {
   try {
     const newProduct = await prisma.product.create({
       data: {
         name: productData.name,
+        brand: productData.brand,
         description: productData.description,
         image: productData.image,
         price: productData.price,
@@ -76,7 +84,7 @@ export async function updateProduct(productId: number, updatedData: Prisma.Produ
   try {
     // Utiliser la méthode update de Prisma pour mettre à jour le produit
     const updatedProduct = await prisma.product.update({
-      where: { id: productId }, // Spécifier l'ID du produit à mettre à jour
+      where: {id: productId}, // Spécifier l'ID du produit à mettre à jour
       data: updatedData, // Spécifier les données mises à jour
     });
     return updatedProduct;
@@ -88,22 +96,30 @@ export async function updateProduct(productId: number, updatedData: Prisma.Produ
 
 export async function uploadImage(file: Express.Multer.File) {
   try {
-      // Ici, vous pouvez implémenter la logique pour enregistrer le fichier
-      // dans le répertoire de stockage et récupérer l'URL de l'image
-      const imageUrl = 'http://localhost:5000/' + file.filename; // Exemple d'URL
-      return imageUrl;
+    // Ici, vous pouvez implémenter la logique pour enregistrer le fichier
+    // dans le répertoire de stockage et récupérer l'URL de l'image
+    const imageUrl = 'http://localhost:5000/' + file.filename; // Exemple d'URL
+    return imageUrl;
   } catch (error) {
-      console.error('Erreur lors de l\'enregistrement de l\'image :', error);
-      throw error;
+    console.error('Erreur lors de l\'enregistrement de l\'image :', error);
+    throw error;
   }
 }
 
-export async function createProductWithImage(productData: { name: string, description: string, price: number, categoryId: number, imagePath: string }) {
+export async function createProductWithImage(productData: {
+  name: string,
+  brand: string,
+  description: string,
+  price: number,
+  categoryId: number,
+  imagePath: string
+}) {
   try {
     // Enregistrer le produit dans la base de données
     const newProduct = await prisma.product.create({
       data: {
         name: productData.name,
+        brand: productData.brand,
         description: productData.description,
         price: productData.price,
         categoryId: productData.categoryId,
