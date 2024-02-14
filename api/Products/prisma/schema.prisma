@@ -11,19 +11,12 @@ datasource db {
 }
 
 model Product {
-  id        Int      @id @default(autoincrement())
-  name      String
-  brand     String
+  id          Int     @id @default(autoincrement())
+  name        String
+  brand       String
   description String?
-  image     String
-  price     Int
+  image       String
+  price       Int
   category    String
-  variants  Variant[]
-}
-
-model Variant {
-  id        Int      @id @default(autoincrement())
-  color     String
-  product   Product  @relation(fields: [productId], references: [id])
-  productId Int
+  variants    String
 }
