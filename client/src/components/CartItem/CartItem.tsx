@@ -1,8 +1,33 @@
-import airForce from "@/assets/Air Force.png";
+import { _CartItem } from "@/types/CartItem.ts";
+import { _ProductItem } from "@/types";
+import { useDispatch } from "react-redux";
+import {
+  changeQuantityInCart,
+  deleteItemInCart,
+} from "@/services/CartServices.ts";
 
-export const CartItem = () => {
-  const deleteItemFromCart = (itemId: number) => {
-    console.log("deleteItemFromCart", itemId);
+type CartItemProps = {
+  item: _CartItem;
+  product: _ProductItem | undefined;
+};
+export const CartItem = ({ item, product }: CartItemProps) => {
+  const dispatch = useDispatch();
+  const deleteItemFromCart = async (itemId: number | undefined) => {
+    if (itemId) {
+      if (item.quantity <= 1) {
+        dispatch({ type: "cart/removeItemFromCart", payload: itemId });
+        await deleteItemInCart(itemId);
+      } else {
+        dispatch({ type: "cart/removeOneAmountFromItem", payload: itemId });
+        await changeQuantityInCart(itemId, item.quantity - 1);
+      }
+    }
+  };
+
+  const redirectOnItem = (itemId: number | undefined) => {
+    if (itemId) {
+      window.location.href = `/${itemId}`;
+    }
   };
 
   return (
@@ -10,29 +35,41 @@ export const CartItem = () => {
       <div className={"flex border-[1px] border-[#CBCBCB] p-4 gap-4"}>
         <div
           className={
-            "aspect-square w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/4 flex items-center"
+            "aspect-square w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/4 flex items-center hover:cursor-pointer"
           }
+          onClick={() => redirectOnItem(product?.id)}
         >
-          <img className={""} src={airForce} alt={"Air Force"} />
+          <img src={product?.image} alt={product?.name} />
         </div>
         <div className={"flex flex-col grow gap-3 relative"}>
           <div className={"my-2"}>
             <span className={"flex justify-between font-bold text-sm"}>
-              <span>Nike Air Force 1 Low</span>
-              <span>119,99 €</span>
+              <span
+                className={"hover:cursor-pointer"}
+                onClick={() => redirectOnItem(product?.id)}
+              >
+                {product?.name}
+              </span>
+              <span>
+                {product?.price.toFixed(2).replace(".", ",").toString()}€
+              </span>
             </span>
-            <span className={"text-xs font-light"}>Chaussure pour homme</span>
+            <span className={"text-sm font-light"}>{product?.category}</span>
           </div>
           <span className={"font-light text-sm lg:text-base"}>
-            Blanc / Blanc
+            <span>{product?.variants}</span>
           </span>
-          <span className={"font-light text-sm lg:text-base"}>Taille 42 </span>
-          <span className={"font-light text-sm lg:text-base"}>Quantité 1</span>
+          <span className={"font-light text-sm lg:text-base"}>
+            <span className={"font-bold"}>{"42"}</span> - Taille
+          </span>
+          <span className={"font-light text-sm lg:text-base"}>
+            <span className={"font-bold"}>{item.quantity}</span> - Quantité
+          </span>
           <button
             className={
               "cursor-pointer absolute bottom-0 right-0 h-8 aspect-square bg-white hover:bg-red-500/15 text-center rounded-full flex items-center justify-center"
             }
-            onClick={() => deleteItemFromCart(1)}
+            onClick={() => deleteItemFromCart(item.itemId)}
           >
             <svg
               width="18px"

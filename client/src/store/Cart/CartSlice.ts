@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAllItemsInCart } from "@/services";
+import { _CartItem } from "@/types";
 
-const initialState = {
+const initialState: {
+  items: Array<_CartItem>;
+  status: string;
+} = {
   items: [],
-  totalPrice: 0,
   status: "idle",
 };
 
@@ -15,12 +18,23 @@ export const FetchCart = createAsyncThunk("/cart", async () => {
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    removeItemFromCart: (state, action) => {
+      state.items = state.items.filter(
+        (item) => item.itemId !== action.payload,
+      );
+    },
+    removeOneAmountFromItem: (state, action) => {
+      const item = state.items.find((item) => item.itemId === action.payload);
+      if (item) {
+        item.quantity -= 1;
+      }
+    },
+  },
   extraReducers(builder) {
     builder.addCase(FetchCart.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.items = action.payload;
-      state.totalPrice = 111.99;
     });
   },
 });
