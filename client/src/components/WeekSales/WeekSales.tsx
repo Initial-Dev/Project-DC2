@@ -7,16 +7,18 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { RootState } from "@/store";
-import { ProductsState } from "@/types";
 import { useSelector } from "react-redux";
 
 export function WeekSales() {
-  const { products, status } = useSelector(
-    (state: RootState) => state.products as ProductsState,
-  );
+  const products = useSelector((state: RootState) => state.products.products);
 
-  if (status === "loading") return <div>Chargement...</div>;
-  if (status === "failed") return <div>Erreur lors du chargement</div>;
+  // Liste des ID de produits que vous souhaitez afficher
+  const selectedProductIds = [65, 77, 1, 97, 102, 70, 78, 8];
+
+  // Filtrer les produits pour ne conserver que ceux dont l'ID est dans selectedProductIds
+  const selectedProducts = products.filter((product) =>
+    selectedProductIds.includes(product.id),
+  );
 
   return (
     <Carousel className="flex flex-col gap-4 relative w-full px-8">
@@ -30,12 +32,12 @@ export function WeekSales() {
         </div>
       </div>
       <CarouselContent>
-        {products.map((item) => (
+        {selectedProducts.map((item) => (
           <CarouselItem
             key={item.id}
             className="basis-1/2 sm:basis-1/3 lg:basis-1/5"
           >
-            <a href={`#${item.id}`}>
+            <a href={`/${item.id}`}>
               <div className="flex flex-col gap-2 px-1">
                 <Card className="bg-zinc-100 overflow-hidden rounded-xl">
                   <CardContent className="relative max-w-xs">
@@ -51,7 +53,7 @@ export function WeekSales() {
                     {item.name}
                   </h1>
                   <h1 className="font-kanit font-extralight text-zinc-400 text-xs sm:text-sm truncate px-1">
-                    {item.description}
+                    chaussures pour {item.category}
                   </h1>
                   <h1 className="font-kanit text-zinc-900 text-sm truncate px-1">
                     {item.price} €
