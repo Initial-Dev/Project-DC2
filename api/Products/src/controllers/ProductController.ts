@@ -53,21 +53,21 @@ export async function searchProductsController(req: Request, res: Response) {
 
 export async function createProductController(req: Request, res: Response) {
   try {
-    // Extraire les données de la requête
-    const { name, description, image, price, categoryId } = req.body;
+    // Extract data from the request
+    const { name, description, image, price, category, brand, variants } = req.body;
 
-    // Appeler le service pour créer le produit
+    // Call the service to create the product
     const newProduct = await createProduct({
-      
       name, 
       description, 
       image, 
-      price: parseFloat(price), // Convertir la chaîne de caractères en nombre
-      categoryId: parseInt(categoryId, 10)
-    
+      price: parseFloat(price), // Convert the string to a number
+      category,
+      brand,
+      variants: variants ? variants.split(',') : [] // Convert the string to an array
     });
 
-    // Répondre avec le nouveau produit créé
+    // Respond with the newly created product
     res.status(201).json(newProduct);
   } catch (error) {
     console.error('Error creating product:', error);
@@ -105,7 +105,7 @@ export async function uploadImageController(req: Request, res: Response) {
   }
 }
 
-export async function createProductWithImageController(req: Request, res: Response) {
+/*export async function createProductWithImageController(req: Request, res: Response) {
   try {
     if (!req.file) {
       return res.status(400).send('Aucune image n\'a été téléchargée.');
@@ -130,7 +130,7 @@ export async function createProductWithImageController(req: Request, res: Respon
     console.error('Erreur lors de la création du produit avec image :', error);
     return res.status(500).json({ error: 'Erreur interne du serveur' });
   }
-}
+}*/
 
 export async function getImage (req: Request, res:Response): Promise<void> {
   const imageName = req.params.imageName;
