@@ -107,8 +107,9 @@ export const NavigationNav = ({ currentPath }: NavigationNavProps) => {
               navigationMenuTriggerStyle(),
               isActive("/")
                 ? "bg-accent text-accent-foreground "
-                : "text-muted-foreground hover:text-primary",
+                : "text-muted-foreground cursor-pointer hover:text-primary",
             )}
+            onClick={() => (window.location.href = "/")}
           >
             Accueil
           </NavigationMenuLink>
@@ -142,10 +143,11 @@ export const NavigationNav = ({ currentPath }: NavigationNavProps) => {
           <NavigationMenuLink
             className={cn(
               navigationMenuTriggerStyle(),
-              isActive("/catalogue")
+              isActive("/catalog")
                 ? "bg-accent text-accent-foreground "
-                : "text-muted-foreground hover:text-primary",
+                : "text-muted-foreground cursor-pointer hover:text-primary",
             )}
+            onClick={() => (window.location.href = "/catalog")}
           >
             Catalogue
           </NavigationMenuLink>

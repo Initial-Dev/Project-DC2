@@ -3,10 +3,17 @@ import { Button } from "@/components/ui/button";
 
 type ShopButtonProps = {
   chip: number | null;
+  link: string;
 };
-export const ShopButton = ({ chip }: ShopButtonProps) => {
+export const ShopButton = ({ chip, link, ...props }: ShopButtonProps) => {
   return (
-    <Button variant="outline" size="icon" className={"relative"}>
+    <Button
+      variant="outline"
+      size="icon"
+      onClick={() => (window.location.href = link)}
+      className={"relative"}
+      {...props}
+    >
       <Icons.shop className="h-4 w-4" />
       {chip && (
         <span
