@@ -24,3 +24,13 @@ export const changeQuantityInCart = async (
     },
   });
 };
+
+export const addItemToCart = async (itemId: number, quantity: number) => {
+  return fetch(`http://localhost:5000/cart`, {
+    method: "POST",
+    body: JSON.stringify({ idItem: itemId, idUser: 1, quantity: quantity }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};

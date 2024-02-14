@@ -30,6 +30,12 @@ const cartSlice = createSlice({
         item.quantity -= 1;
       }
     },
+    addOneAmountToItem: (state, action) => {
+      const item = state.items.find((item) => item.itemId === action.payload);
+      if (item) {
+        state.items.push({ userID: 1, itemId: item.itemId, quantity: 1 });
+      }
+    },
   },
   extraReducers(builder) {
     builder.addCase(FetchCart.fulfilled, (state, action) => {
