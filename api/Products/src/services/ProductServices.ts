@@ -54,14 +54,7 @@ export async function searchProducts(query: string) {
   }
 }
 
-export async function createProduct(productData: {
-  name: string,
-  brand: string,
-  description: string,
-  image: string,
-  price: number,
-  categoryId: number
-}) {
+export async function createProduct(productData: {name: string, description: string, image: string, price: number, category: string, brand: string, variants: string[]}) {
   try {
     const newProduct = await prisma.product.create({
       data: {
@@ -70,7 +63,11 @@ export async function createProduct(productData: {
         description: productData.description,
         image: productData.image,
         price: productData.price,
-        categoryId: productData.categoryId,
+        category: productData.category,
+        brand: productData.brand,
+        variants: {
+          create: productData.variants.map(variant => ({ color: variant }))
+        }
       },
     });
     return newProduct;
@@ -106,14 +103,7 @@ export async function uploadImage(file: Express.Multer.File) {
   }
 }
 
-export async function createProductWithImage(productData: {
-  name: string,
-  brand: string,
-  description: string,
-  price: number,
-  categoryId: number,
-  imagePath: string
-}) {
+/*export async function createProductWithImage(productData: { name: string, description: string, price: number, categoryId: number, imagePath: string }) {
   try {
     // Enregistrer le produit dans la base de données
     const newProduct = await prisma.product.create({
@@ -131,4 +121,4 @@ export async function createProductWithImage(productData: {
     console.error('Erreur lors de la création du produit avec image :', error);
     throw error;
   }
-}
+}*/
