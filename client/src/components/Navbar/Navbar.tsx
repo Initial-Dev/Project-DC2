@@ -9,7 +9,8 @@ import {
   FingerPrintIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import "@fontsource/protest-strike";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -57,16 +58,45 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
   const cartItemsAmount = useSelector(
     (state: RootState) => state.cart.items.length,
   );
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const position = window.scrollY;
+      setScrollPosition(position);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 640);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const logoSize = scrollPosition > 80 ? "32" : "16";
 
   return (
     <nav className="sticky top-0 z-50 h-auto bg-white border-b ">
       <div className="flex h-16 items-center px-4">
-        <a href="/" className="flex items-center gap-3">
-          <img className="h-10 w-10" src="./logo.png" alt="BreizhSPORT-logo" />
-          <h1 className=" hidden sm:block font-kanit font-semibold">
-            BreizhSPORT
-          </h1>
+        <a href="/">
+          <img
+            src="./logo.png"
+            alt="Logo"
+            className={`ml-3 ${isSmallScreen ? "w-16 h-16" : `w-${logoSize} h-${logoSize}`} transform transition-all duration-300`}
+          />
         </a>
+        <h1 className=" hidden sm:block font-['Protest_Strike'] font-normal text-3xl text-slate-800">
+          BREIZHSPORT
+        </h1>
         <div className="ml-auto flex flex-wrap items-center space-x-4">
           <NavigationNav currentPath={currentPath} />
           <SearchBar />
