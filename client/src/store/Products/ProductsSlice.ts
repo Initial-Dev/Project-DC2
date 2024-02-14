@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getAllProducts } from "@/services";
+import { _ProductItem } from "@/types";
 
-const initialState = {
+const initialState: { products: Array<_ProductItem>; status: string } = {
   products: [],
   status: "idle",
 };
