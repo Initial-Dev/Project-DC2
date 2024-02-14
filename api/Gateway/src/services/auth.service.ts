@@ -9,6 +9,11 @@ export const register = async (
 	name: string,
 	password: string
 ) => {
+	// Vérifier que le nom contient au moins trois lettres
+	if (name.length < 3) {
+		throw new Error('Le nom doit contenir au moins trois lettres.');
+	}
+
 	const hashedPassword = await bcrypt.hash(password, 10);
 	const avatarUrl = `https://avatar.vercel.sh/rauchg.svg?text=${name
 		.substring(0, 2)

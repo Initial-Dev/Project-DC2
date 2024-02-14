@@ -1,12 +1,7 @@
+import { User } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 import { IVerifyOptions } from 'passport-local';
-
-// En supposant que `user` soit de type `Express.User` ou un type personnalisé que vous avez défini
-interface User {
-	id: string;
-	email: string;
-}
 
 const AuthenticateJWT = (req: Request, res: Response, next: NextFunction) => {
 	passport.authenticate(
