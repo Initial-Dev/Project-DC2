@@ -1,5 +1,7 @@
 import { NavigationNav, SearchBar, ShopButton } from "@/components/";
 //import { UserNav } from '@/components/UserNav/UserNav';
+import { RootState } from "@/store";
+import "@fontsource/protest-strike";
 import { Dialog, Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import {
@@ -9,11 +11,9 @@ import {
   FingerPrintIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import "@fontsource/protest-strike";
-import React, { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { Button } from "../ui/button";
 
 interface NavbarProps {
   currentPath: string;
@@ -57,53 +57,32 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   let cartItemsAmount = 0;
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const position = window.scrollY;
-      setScrollPosition(position);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 640);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   cartItems.forEach((item) => {
     cartItemsAmount += item.quantity;
   });
 
-  const logoSize = scrollPosition > 80 ? "32" : "16";
-
   return (
     <nav className="sticky top-0 z-50 h-auto bg-white border-b ">
       <div className="flex h-16 items-center px-4">
-        <a href="/">
+        <a className="flex items-center gap-4" href="/">
           <img
             src="./logo.png"
             alt="Logo"
-            className={`ml-3 ${isSmallScreen ? "w-16 h-16" : `w-${logoSize} h-${logoSize}`} transform transition-all duration-300`}
+            className={`ml-3 w-12 h-12 transform transition-all duration-300`}
           />
+
+          <h1 className=" hidden sm:block font-['Protest_Strike'] font-normal text-xl text-slate-800">
+            BREIZHSPORT
+          </h1>
         </a>
-        <h1 className=" hidden sm:block font-['Protest_Strike'] font-normal text-3xl text-slate-800">
-          BREIZHSPORT
-        </h1>
         <div className="ml-auto flex flex-wrap items-center space-x-4">
           <NavigationNav currentPath={currentPath} />
           <SearchBar />
-          <ShopButton chip={cartItemsAmount > 0 ? cartItemsAmount : null} />
+          <ShopButton
+            link="/cart"
+            chip={cartItemsAmount > 0 ? cartItemsAmount : null}
+          />
           <Button link={"/login"}> Login </Button>
           {/* <UserNav /> */}
           <div className="flex xl:hidden">
@@ -146,7 +125,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
                 <div className="-my-6 divide-y divide-gray-500/10">
                   <div className="space-y-2 py-6">
                     <a
-                      href="#"
+                      href="/"
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Accueil
@@ -179,32 +158,32 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath }) => {
                         </>
                       )}
                     </Disclosure>
-                    <a
-                      href="#"
+                    <button
+                      onClick={() => (window.location.href = "/catalog")}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Catalogue
-                    </a>
-                    <a
-                      href="#"
+                    </button>
+                    <button
+                      onClick={() => (window.location.href = "/new-products")}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Nouveaux produits
-                    </a>
+                    </button>
                     <a
-                      href="#"
+                      href="/"
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Meilleures ventes
                     </a>
                   </div>
                   <div className="py-6">
-                    <a
-                      href="#"
+                    <button
+                      onClick={() => (window.location.href = "/login")}
                       className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Log in
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
