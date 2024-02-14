@@ -54,20 +54,25 @@ export async function searchProducts(query: string) {
   }
 }
 
-export async function createProduct(productData: {name: string, description: string, image: string, price: number, category: string, brand: string, variants: string[]}) {
+export async function createProduct(productData: {
+  name: string,
+  description: string,
+  image: string,
+  price: number,
+  category: string,
+  brand: string,
+  variants: string
+}) {
   try {
     const newProduct = await prisma.product.create({
       data: {
         name: productData.name,
-        brand: productData.brand,
         description: productData.description,
         image: productData.image,
         price: productData.price,
         category: productData.category,
         brand: productData.brand,
-        variants: {
-          create: productData.variants.map(variant => ({ color: variant }))
-        }
+        variants: productData.variants,
       },
     });
     return newProduct;
