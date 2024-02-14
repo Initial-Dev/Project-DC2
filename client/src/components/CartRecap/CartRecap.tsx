@@ -1,4 +1,8 @@
-export const CartRecap = () => {
+type CartRecapProps = {
+  totalPrice: string;
+};
+
+export const CartRecap = ({ totalPrice }: CartRecapProps) => {
   return (
     <>
       <div className={"flex flex-col border-[1px] border-[#CBCBCB] p-4 gap-6"}>
@@ -25,7 +29,7 @@ export const CartRecap = () => {
           <div className={"flex flex-col font-light gap-2"}>
             <span className={"flex justify-between text-sm font-bold"}>
               <span className={""}>TOTAL ESTIME</span>
-              <span>119.99 €</span>
+              <span>{totalPrice} €</span>
             </span>
             <span className={"text-sm font-light"}>TVA Incluse</span>
           </div>

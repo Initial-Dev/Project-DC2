@@ -10,7 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id   Int    @id @default(autoincrement())
-  name String
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  brand       String
+  description String?
+  image       String
+  price       Int
+  category    String
+  variants    String
 }

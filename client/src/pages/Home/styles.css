@@ -1,0 +1,18 @@
+.product-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25px,1fr));
+    grid-gap : 1rem;
+}
+
+.product-card {
+    border: 1px solid #ccc;
+    box-shadow : 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
