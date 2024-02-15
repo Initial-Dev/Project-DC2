@@ -1,12 +1,10 @@
-import express, { Application } from 'express';
+import express, {Application} from 'express';
 
 const ExpressConfig = (): Application => {
-	const app = express();
+  const app = express();
 
-	// Middleware pour parser les corps de requêtes JSON.
-	app.use(express.json());
 
-	return app;
+  return app;
 };
 
 export default ExpressConfig;
