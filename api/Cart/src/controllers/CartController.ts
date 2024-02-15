@@ -23,6 +23,7 @@ export async function addItemToCart(req: Request<{ idItem: number, idUser: numbe
   try {
     if (!req.body.idItem || !req.body.idUser || !req.body.quantity) res.status(400).send("Item ID, User ID and quantity are required");
 
+    console.log(req.body.idUser, req.body.idItem, req.body.quantity);
     return res.status(201).send(await addItem(Number(req.body.idUser), Number(req.body.idItem), Number(req.body.quantity)));
 
   } catch (error: any) {

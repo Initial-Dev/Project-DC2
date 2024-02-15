@@ -31,10 +31,8 @@ const cartSlice = createSlice({
       }
     },
     addOneAmountToItem: (state, action) => {
-      const item = state.items.find((item) => item.itemId === action.payload);
-      if (item) {
-        state.items.push({ userID: 1, itemId: item.itemId, quantity: 1 });
-      }
+      console.log("addOneAmountToItem", action.payload);
+      state.items.push({ userID: 1, itemId: action.payload, quantity: 1 });
     },
   },
   extraReducers(builder) {

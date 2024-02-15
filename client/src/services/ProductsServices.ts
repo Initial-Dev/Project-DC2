@@ -1,3 +1,3 @@
 export const getAllProducts = async () => {
-  return fetch(`${process.env.API_URL}/product`);
+  return fetch(`http://localhost:5000/products`);
 };
