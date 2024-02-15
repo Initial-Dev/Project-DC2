@@ -1,22 +1,30 @@
 import { RootState } from "@/store";
 import { Tab } from "@headlessui/react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { WeekSales } from "@/components";
+import { addItemToCart } from "@/services/CartServices.ts";
+
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export const Detail = () => {
   const id = useParams().id;
+  const dispatch = useDispatch();
 
   const product = useSelector((state: RootState) =>
     state.products.products.find((p) => String(p.id) === String(id)),
   );
 
-  console.log(product);
+  const addOneItemInTheCart = async () => {
+    if (product) {
+      dispatch({ type: "cart/addOneAmountToItem", payload: product.id });
+      await addItemToCart(product.id, 1);
+    }
+  };
 
   return (
     <div>
@@ -85,16 +93,15 @@ export const Detail = () => {
                     </p>
                   </div>
                   <SizeSelector />
-                  <form className="mt-6">
-                    <div className="mt-10 flex">
-                      <button
-                        type="submit"
-                        className="flex max-w-xs font-kanit flex-1 items-center justify-center rounded-full border border-transparent bg-zinc-900 px-8 py-3 text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
-                      >
-                        Ajouer au panier
-                      </button>
-                    </div>
-                  </form>
+                  <div className="mt-10 flex">
+                    <button
+                      type="submit"
+                      className="flex max-w-xs font-kanit flex-1 items-center justify-center rounded-full border border-transparent bg-zinc-900 px-8 py-3 text-base font-medium text-white hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                      onClick={addOneItemInTheCart}
+                    >
+                      Ajouter au panier
+                    </button>
+                  </div>
                 </div>
               </div>
 
